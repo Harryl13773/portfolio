@@ -1,18 +1,26 @@
 [
   {
     "id": 1,
-    "title": "Portfolio Website",
-    "description": "A full-stack portfolio built with React, Express, and Node.js",
-    "tech": ["React", "Express", "Node.js"],
-    "github": "https://github.com/Harryl13773/portfolio",
+    "title": "Haptic Feedback VR Glove",
+    "description": "Senior capstone project featuring a VR glove with real-time haptic and thermal feedback. Built BLE firmware on dual ESP32-S3 microcontrollers with bidirectional communication, automatic reconnection, and a custom multi-command packet parser to control 10 vibration motors and 2 Peltier thermal tiles synced with Unity.",
+    "tech": ["C++", "Arduino", "ESP32", "BLE", "PWM", "Unity"],
+    "github": "",
     "live": ""
   },
   {
     "id": 2,
-    "title": "Project Two",
-    "description": "Description of your second project",
-    "tech": ["Tech1", "Tech2"],
+    "title": "Autonomous Oxygen Management System",
+    "description": "1st Place winner at IEEE ProfHackathon (Track 3: Outlaws & Automation). A Python-controlled PLC simulating a space habitat oxygen tank that autonomously responds to demand fluctuations using a real-time Serial/Modbus control loop to adjust motor output via Variable Frequency Drive.",
+    "tech": ["Python", "Modbus", "PLC", "VFD"],
     "github": "",
+    "live": ""
+  },
+  {
+    "id": 3,
+    "title": "RAG API with Automated Quality Testing",
+    "description": "A FastAPI REST API implementing Retrieval-Augmented Generation — queries ChromaDB for nearest-neighbor context retrieval, augments prompts, and generates responses via a local Ollama (tinyllama) LLM. Includes a GitHub Actions CI/CD pipeline running automated semantic regression tests on every push.",
+    "tech": ["Python", "FastAPI", "ChromaDB", "Ollama", "CI/CD"],
+    "github": "https://github.com/Harryl13773/Rag-API-with-FastAPI",
     "live": ""
   }
 ]

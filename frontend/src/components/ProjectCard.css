@@ -1,0 +1,56 @@
+.project-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: #4a4a4a;
+}
+
+.project-title {
+  font-size: 20px;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.project-description {
+  font-size: 14px;
+  color: #a0a0a0;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tech-pill {
+  font-size: 12px;
+  color: #c0c0c0;
+  background: #2a2a2a;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.project-links {
+  display: flex;
+  gap: 16px;
+}
+
+.project-links a {
+  font-size: 14px;
+  color: #6ea8fe;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.project-links a:hover {
+  text-decoration: underline;
+}
