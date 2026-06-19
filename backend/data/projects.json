@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Portfolio Website",
+    "description": "A full-stack portfolio built with React, Express, and Node.js",
+    "tech": ["React", "Express", "Node.js"],
+    "github": "https://github.com/Harryl13773/portfolio",
+    "live": ""
+  },
+  {
+    "id": 2,
+    "title": "Project Two",
+    "description": "Description of your second project",
+    "tech": ["Tech1", "Tech2"],
+    "github": "",
+    "live": ""
+  }
+]
