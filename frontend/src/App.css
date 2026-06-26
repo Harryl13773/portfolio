@@ -1,25 +1,22 @@
-/* Style the whole page background, not just the app container */
 body {
   margin: 0;
   background: #0d0d0d;
 }
 
 .app {
-  max-width: 1000px;
-  margin: 0 auto;       /* centers the .app container horizontally */
-  padding: 60px 24px;
+  padding: 60px 0;
   font-family: system-ui, sans-serif;
 }
 
 .app h1 {
   color: #ffffff;
   margin-bottom: 32px;
-  text-align: center;   /* centers the heading text */
+  text-align: center;
+  padding: 0 48px;
 }
 
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  justify-content: center;   /* centers the grid columns when there's extra space */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
