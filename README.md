@@ -1,13 +1,27 @@
-# portfolio
+# Portfolio
 
-Use the Command for frontend:
+**Description:**
 
-```bash
-npm run dev
-```
+Personal portfolio website for Harry Lian, showcasing projects, work experience, skills, and contact form.
 
-Use the Command for backend:
+**Last Deployed:** July 5th, 2026
 
-```bash
-node server.js
-```
+**Website:** [harrylian.com](https://harrylian.com/)
+
+**Frontend:**
+
+- React
+- Vanilla JavaScript
+- Vite
+
+**Backend:**
+
+- Node.js
+- Express 5
+- CORS
+- express-rate-limit
+
+**Deployments:**
+
+- Frontend: Cloudflare
+- Backend: Render

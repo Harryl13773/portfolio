@@ -13,8 +13,7 @@ const app = express()
 //able to read real visitor's IP for the rate limiter to work
 app.set('trust proxy', 1)
 
-// CORS: only these origins may call the API from a browser.
-// Add/remove entries as your domains change.
+// add/remove entries as your domains change.
 const allowedOrigins = [
   'http://localhost:5173',        // local dev
   'https://harrylian.com',        // production
