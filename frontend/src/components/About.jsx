@@ -12,17 +12,14 @@ function About() {
 
       {/* Short bio */}
       <p className="about-bio">
-        Computer Engineering graduate from Ohio State University with hands-on experience
+        Computer Engineering graduate from The Ohio State University with hands-on experience
         building full-stack web applications, embedded systems, and AI-powered backends.
-        Passionate about writing clean, purposeful code — from React frontends to Node.js
-        APIs to low-level firmware.
       </p>
 
       {/* Education */}
       <div className="about-education">
-        <p className="about-school">Ohio State University</p>
+        <p className="about-school">The Ohio State University</p>
         <p className="about-degree">B.S. Electrical & Computer Engineering · May 2026</p>
-        <p className="about-honors">Dean's List · 3rd Place Engineering Showcase · Daytona LaSertoma Recipient</p>
       </div>
 
       {/* Skills grouped by category */}
