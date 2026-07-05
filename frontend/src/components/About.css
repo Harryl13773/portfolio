@@ -1,0 +1,108 @@
+/* About section sits above the projects */
+.about {
+  padding: 80px 48px 60px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Name and role stacked centrally */
+.about-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.about-name {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 2;
+  letter-spacing: 1px;
+}
+
+.about-role {
+  font-size: 18px;
+  color: #6ea8fe;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Bio paragraph */
+.about-bio {
+  font-size: 15px;
+  color: #a0a0a0;
+  line-height: 1.8;
+  margin: 0;
+  max-width: 680px;
+}
+
+/* Education block */
+.about-education {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about-school {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 600;
+  margin: 0;
+}
+
+.about-degree {
+  font-size: 14px;
+  color: #a0a0a0;
+  margin: 0;
+}
+
+.about-honors {
+  font-size: 13px;
+  color: #6a6a6a;
+  margin: 0;
+}
+
+/* Skills section — each group is a row of label + pills */
+.about-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.skill-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Category label — fixed width so pills line up neatly */
+.skill-label {
+  font-size: 12px;
+  color: #6a6a6a;
+  font-weight: 500;
+  width: 100px;
+  flex-shrink: 0;
+  padding-top: 4px;           /* aligns label baseline with first pill */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Pills row */
+.skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-pill {
+  font-size: 12px;
+  color: #c0c0c0;
+  background: #1a1a1a;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #2a2a2a;
+}

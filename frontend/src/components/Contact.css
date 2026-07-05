@@ -1,0 +1,84 @@
+.contact {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+.contact-heading {
+  font-size: 1.75rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.contact-subtext {
+  color: #999;
+  margin-bottom: 2rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.contact-input {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  color: #eee;
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0.65rem 0.85rem;
+  transition: border-color 0.2s ease;
+}
+
+.contact-input:focus {
+  outline: none;
+  border-color: #555;
+}
+
+.contact-textarea {
+  resize: vertical;
+}
+
+.contact-submit {
+  align-self: flex-start;
+  background: #fff;
+  color: #0d0d0d;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.65rem 1.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.contact-submit:hover {
+  opacity: 0.85;
+}
+
+.contact-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.contact-status {
+  font-size: 0.9rem;
+}
+
+.contact-status-success {
+  color: #6fcf7a;
+}
+
+.contact-status-error {
+  color: #e5736f;
+}

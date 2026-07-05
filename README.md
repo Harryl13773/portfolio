@@ -3,7 +3,7 @@
 Use the Command for frontend:
 
 ```bash
-npm start dev
+npm run dev
 ```
 
 Use the Command for backend:
