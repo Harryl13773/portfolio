@@ -3,6 +3,8 @@ import Navbar from './components/Navbar';
 import About from './components/About';
 import ProjectCard from './components/ProjectCard';
 import Contact from './components/Contact';
+import Footer from './components/Footer';
+import Experience from './components/Experience';
 import './App.css';
 
 function App() {
@@ -31,6 +33,10 @@ function App() {
           <About />
         </section>
 
+        <section id="experience">
+          <Experience />
+        </section>
+
         <section id="projects" className="projects-section">
           <h2 className="projects-heading">Projects</h2>
           {loading && <p className="projects-message">Loading projects…</p>}
@@ -42,6 +48,7 @@ function App() {
 
         <Contact />
       </main>
+      <Footer />
     </div>
   );
 }

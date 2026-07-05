@@ -8,10 +8,6 @@ const path = require('path')
 //loading project data
 const projects = require(path.join(__dirname, '../data/projects.json'))
 
-//getting the list for contact
-const contactRoutes = require('./routes/contact');
-app.use('/api/contact', contactRoutes);
-
 //return the list of projects
 router.get('/', (req, res)=>{
     res.json(projects)

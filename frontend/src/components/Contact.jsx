@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import './Contact.css';
 
-const INITIAL_FORM = { name: '', email: '', message: '' };
+// "company" is the honeypot — hidden from humans, tempting to bots
+const INITIAL_FORM = { name: '', email: '', message: '', company: '' };
 
 function Contact() {
   const [form, setForm] = useState(INITIAL_FORM);
@@ -46,6 +47,20 @@ function Contact() {
       </p>
 
       <form className="contact-form" onSubmit={handleSubmit}>
+        {/* Honeypot — invisible to humans, bots auto-fill it.
+            Do NOT use display:none; some bots skip those. */}
+        <label className="contact-honeypot" aria-hidden="true">
+          Company
+          <input
+            type="text"
+            name="company"
+            value={form.company}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+
         <label className="contact-label">
           Name
           <input

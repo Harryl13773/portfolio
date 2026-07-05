@@ -1,0 +1,134 @@
+.experience {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2rem;
+  text-align: left;
+}
+
+.experience-heading {
+  color: var(--text-h);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* The timeline: a vertical line on the left, one dot per job */
+.experience-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* the vertical line */
+.experience-list::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+}
+
+.experience-item {
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.experience-item:last-child {
+  padding-bottom: 0;
+}
+
+/* the dot on the line */
+.experience-marker {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+}
+
+.experience-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.experience-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.experience-role {
+  color: var(--text-h);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.experience-dates {
+  color: var(--text);
+  opacity: 0.8;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.experience-company {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0.15rem 0 0.75rem;
+}
+
+.experience-location {
+  color: var(--text);
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+.experience-points {
+  margin: 0 0 0.9rem;
+  padding-left: 1.1rem;
+  color: var(--text);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.experience-points li + li {
+  margin-top: 0.35rem;
+}
+
+/* tech pills — same look as the skill pills in About */
+.experience-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.experience-pill {
+  font-size: 12px;
+  color: var(--text-h);
+  background: var(--code-bg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .experience {
+    padding: 3rem 1rem 1.5rem;
+  }
+
+  .experience-top {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}

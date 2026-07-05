@@ -4,19 +4,22 @@ require('dotenv').config()
 //import packages
 const express = require('express')
 const cors = require('cors')
-const projectRouter = require('./routes/projects')
+const projectRoutes = require('./routes/projects')
+const contactRoutes = require('./routes/contact')
 
 //create Express app
 const app = express()
-app.use(cors()) //allow requests from React frontend
-app.use(express.json()) //allow server to read JSON data sent in request bodies
+app.use(cors())          //allow requests from React frontend
+app.use(express.json())  //allow server to read JSON data sent in request bodies
 
 // a test route
 app.get('/', (req, res) => {
   res.send('Portfolio API is running!')
 })
 
-app.use('/api/projects', projectRouter) //GET /api/projects
+//routes
+app.use('/api/projects', projectRoutes)  //GET /api/projects
+app.use('/api/contact', contactRoutes)   //POST /api/contact
 
 //use the PORT from the .env file, or default to 3001 if not set
 const PORT = process.env.PORT || 3001

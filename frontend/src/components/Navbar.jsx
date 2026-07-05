@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import './Navbar.css';
-// Vite turns this import into a URL that works in dev and in the production build.
-// Rename to match your actual file in src/assets/.
+
+// my resume
 import resumePdf from '../assets/resume.pdf';
 
 const LINKS = [
   { label: 'About', target: 'about' },
+  { label: 'Experience', target: 'experience' },
   { label: 'Projects', target: 'projects' },
   { label: 'Contact', target: 'contact' },
 ];

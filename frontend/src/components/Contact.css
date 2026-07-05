@@ -2,16 +2,16 @@
   max-width: 640px;
   margin: 0 auto;
   padding: 4rem 1.5rem 6rem;
+  text-align: left;
 }
 
 .contact-heading {
-  font-size: 1.75rem;
-  color: #fff;
+  color: var(--text-h);
   margin-bottom: 0.5rem;
 }
 
 .contact-subtext {
-  color: #999;
+  color: var(--text);
   margin-bottom: 2rem;
 }
 
@@ -21,28 +21,39 @@
   gap: 1.25rem;
 }
 
+/* Honeypot: moved off-screen rather than display:none,
+   so bots that skip invisible fields still see it */
+.contact-honeypot {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
 .contact-label {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  color: #ccc;
+  color: var(--text-h);
   font-size: 0.9rem;
 }
 
 .contact-input {
-  background: #161616;
-  border: 1px solid #2a2a2a;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: #eee;
+  color: var(--text-h);
   font-size: 1rem;
-  font-family: inherit;
+  font-family: var(--sans);
   padding: 0.65rem 0.85rem;
   transition: border-color 0.2s ease;
 }
 
 .contact-input:focus {
   outline: none;
-  border-color: #555;
+  border-color: var(--accent-border);
 }
 
 .contact-textarea {
@@ -51,12 +62,13 @@
 
 .contact-submit {
   align-self: flex-start;
-  background: #fff;
-  color: #0d0d0d;
+  background: var(--accent);
+  color: var(--bg);
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 600;
+  font-family: var(--sans);
   padding: 0.65rem 1.5rem;
   cursor: pointer;
   transition: opacity 0.2s ease;
