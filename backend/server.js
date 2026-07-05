@@ -19,6 +19,7 @@ const allowedOrigins = [
   'http://localhost:5173',        // local dev
   'https://harrylian.com',        // production
   'https://www.harrylian.com',    // production (www)
+  'https://portfolio.lian-000155.workers.dev', //origin URL
 ]
 app.use(cors({ origin: allowedOrigins }))
 
