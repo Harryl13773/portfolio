@@ -7,36 +7,84 @@ const router = express.Router();
 
 const MESSAGES_FILE = path.join(__dirname, '..', 'data', 'messages.json');
 
-// Basic email shape check (not exhaustive, just sanity)
+// basic email shape check (not exhaustive, just sanity)
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// --- Rate limiter: max 5 submissions per IP per hour ---
-// This runs BEFORE the route handler. Requests over the limit
-// get a 429 response and never reach our code at all.
+// rate limiter: max 5 submissions per IP per hour
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5,
-  standardHeaders: true, // adds RateLimit-* headers to responses
+  standardHeaders: true,
   legacyHeaders: false,
   message: {
     error: 'Too many messages from this address. Please try again in an hour.',
   },
 });
 
+
+//escape user input before putting it into email HTML
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+
+//Resend's HTTP API
+async function sendNotificationEmail({ name, email, message }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const toEmail = process.env.CONTACT_TO_EMAIL;
+
+  // not configured
+  if (!apiKey || !toEmail) {
+    console.log('Email not configured (RESEND_API_KEY / CONTACT_TO_EMAIL missing) — skipping notification.');
+    return;
+  }
+
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Portfolio Contact <onboarding@resend.dev>',
+      to: [toEmail],
+      reply_to: email, // hitting "Reply" in your inbox replies to the sender
+      subject: `Portfolio message from ${name}`,
+      text: `From: ${name} <${email}>\n\n${message}`,
+      html: `
+        <h2>New portfolio message</h2>
+        <p><strong>From:</strong> ${safeName} &lt;${safeEmail}&gt;</p>
+        <p style="white-space:pre-wrap;border-left:3px solid #c084fc;padding-left:12px;">${safeMessage}</p>
+      `,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Resend API responded ${res.status}: ${body}`);
+  }
+}
+
 // POST /api/contact
-router.post('/', contactLimiter, (req, res) => {
+router.post('/', contactLimiter, async (req, res) => {
   const { name, email, message, company } = req.body || {};
 
-  // --- Honeypot check ---
-  // "company" is a hidden field real users never see or fill.
-  // If it arrives with content, this is a bot. We return a fake
-  // success so the bot thinks it worked and doesn't adapt.
+  // Honeypot check
   if (company) {
     console.log('Honeypot triggered — dropping bot submission.');
     return res.status(201).json({ success: true });
   }
 
-  // --- Validation ---
+  // validation
   if (!name || !email || !message) {
     return res
       .status(400)
@@ -61,7 +109,7 @@ router.post('/', contactLimiter, (req, res) => {
       .json({ error: 'Message must be between 10 and 2000 characters.' });
   }
 
-  // --- Save the message ---
+  //save the message
   const newMessage = {
     id: Date.now(),
     name: name.trim(),
@@ -70,6 +118,7 @@ router.post('/', contactLimiter, (req, res) => {
     receivedAt: new Date().toISOString(),
   };
 
+  //save email
   try {
     let messages = [];
     if (fs.existsSync(MESSAGES_FILE)) {
@@ -82,7 +131,14 @@ router.post('/', contactLimiter, (req, res) => {
     return res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 
-  console.log(`New contact message from ${newMessage.name} <${newMessage.email}>`);
+  // try to email, if it fails, the message is saved, and the user gets success
+  try {
+    await sendNotificationEmail(newMessage);
+    console.log(`Notification email sent for message from ${newMessage.name}.`);
+  } catch (err) {
+    console.error('Email notification failed (message is still saved):', err.message);
+  }
+
   return res.status(201).json({ success: true });
 });
 

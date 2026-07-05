@@ -9,10 +9,22 @@ const contactRoutes = require('./routes/contact')
 
 //create Express app
 const app = express()
-app.use(cors())          //allow requests from React frontend
-app.use(express.json())  //allow server to read JSON data sent in request bodies
 
-// a test route
+//able to read real visitor's IP for the rate limiter to work
+app.set('trust proxy', 1)
+
+// CORS: only these origins may call the API from a browser.
+// Add/remove entries as your domains change.
+const allowedOrigins = [
+  'http://localhost:5173',        // local dev
+  'https://harrylian.com',        // production
+  'https://www.harrylian.com',    // production (www)
+]
+app.use(cors({ origin: allowedOrigins }))
+
+app.use(express.json()) //allow server to read JSON data sent in request bodies
+
+// a test route (also useful as a health check after deploying)
 app.get('/', (req, res) => {
   res.send('Portfolio API is running!')
 })

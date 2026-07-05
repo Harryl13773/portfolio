@@ -7,13 +7,16 @@ import Footer from './components/Footer';
 import Experience from './components/Experience';
 import './App.css';
 
+// Comes from .env files: localhost in dev, your Render URL in production
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 function App() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/projects')
+    fetch(`${API_URL}/api/projects`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to load projects.');
         return res.json();

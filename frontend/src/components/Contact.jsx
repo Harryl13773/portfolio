@@ -4,6 +4,9 @@ import './Contact.css';
 // "company" is the honeypot — hidden from humans, tempting to bots
 const INITIAL_FORM = { name: '', email: '', message: '', company: '' };
 
+// comes from .env files: localhost in dev, your Render URL in production
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 function Contact() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
@@ -19,7 +22,7 @@ function Contact() {
     setErrorMsg('');
 
     try {
-      const res = await fetch('http://localhost:3001/api/contact', {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -47,8 +50,7 @@ function Contact() {
       </p>
 
       <form className="contact-form" onSubmit={handleSubmit}>
-        {/* Honeypot — invisible to humans, bots auto-fill it.
-            Do NOT use display:none; some bots skip those. */}
+        {/* Honeypot integration */}
         <label className="contact-honeypot" aria-hidden="true">
           Company
           <input
