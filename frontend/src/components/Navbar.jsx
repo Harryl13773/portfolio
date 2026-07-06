@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Navbar.css';
 
 // my resume
@@ -13,6 +13,28 @@ const LINKS = [
 
 function Navbar() {
   const [activeSection, setActiveSection] = useState('about');
+  const progressRef = useRef(null);
+
+  // Thin beam along the top edge tracking scroll progress.
+  // Writes transform directly (no state) so scrolling never re-renders.
+  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const progress = max > 0 ? doc.scrollTop / max : 0;
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${progress})`;
+      }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
 
   // Watch which section is currently on screen and highlight its tab
   useEffect(() => {
@@ -45,6 +67,8 @@ function Navbar() {
 
   return (
     <>
+      <div className="scroll-progress" aria-hidden="true" ref={progressRef} />
+
       <button
         className="navbar-name"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -64,7 +88,7 @@ function Navbar() {
 
       <nav className="side-nav" aria-label="Section navigation">
         <ul className="side-nav-links">
-          {LINKS.map((link) => (
+          {LINKS.map((link, i) => (
             <li key={link.target}>
               <button
                 className={
@@ -73,6 +97,9 @@ function Navbar() {
                 }
                 onClick={() => scrollTo(link.target)}
               >
+                <span className="side-nav-index" aria-hidden="true">
+                  0{i + 1}
+                </span>
                 <span className="side-nav-indicator" aria-hidden="true" />
                 <span className="side-nav-label">{link.label}</span>
               </button>

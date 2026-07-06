@@ -43,8 +43,9 @@ function Contact() {
   };
 
   return (
-    <section id="contact" className="contact">
-      <h2 className="contact-heading">Contact</h2>
+    <section id="contact" className="contact reveal">
+      <span className="section-eyebrow">Contact</span>
+      <h2 className="contact-heading">Get In Touch</h2>
       <p className="contact-subtext">
         Have a question or want to work together? Send a message.
       </p>

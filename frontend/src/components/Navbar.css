@@ -1,3 +1,22 @@
+/* Scroll progress beam — 2px accent line along the very top edge that
+   fills as you read. transform-driven so it's GPU-cheap. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 200;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 35%, transparent)
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
 /* Name pinned to the top-left corner */
 .navbar-name {
   position: fixed;
@@ -85,9 +104,24 @@
   cursor: pointer;
   padding: 0.25rem 0;
   color: var(--text);
-  font-family: var(--sans);
-  font-size: 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   transition: color 0.2s ease;
+}
+
+/* Section index — nav order is a real sequence, so numbering carries info */
+.side-nav-index {
+  font-size: 0.62rem;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.side-nav-link-active .side-nav-index {
+  color: var(--accent);
+  opacity: 1;
 }
 
 /* The short line next to each label — grows and turns purple when active */
@@ -161,7 +195,8 @@
     backdrop-filter: none;
   }
 
-  .side-nav-indicator {
+  .side-nav-indicator,
+  .side-nav-index {
     display: none;
   }
 

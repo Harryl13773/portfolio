@@ -13,9 +13,16 @@
   --shadow:
     rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Typography: Inter for body, Space Grotesk for headings,
+     JetBrains Mono for labels/dates/pills (the "engineered" accent) */
+  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Space Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+
+  /* Ambient depth (derived from --accent / --text-h — keep in sync) */
+  --glow: rgba(192, 132, 252, 0.12);
+  --grid-dot: rgba(243, 244, 246, 0.035);
+  --status: #4ade80; /* availability-badge dot (green) */
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -39,6 +46,76 @@
 
 body {
   margin: 0;
+  /* Faint dot grid — gives the flat background a sense of surface */
+  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Soft purple glow anchored behind the hero. Fixed so it stays put on
+   scroll; z-index -1 keeps it behind all content but above the dot grid. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 55% at 50% -12%,
+    var(--glow),
+    transparent 65%
+  );
+}
+
+/* Film grain — a whisper of SVG noise over everything. This is what makes
+   flat dark surfaces feel like a material instead of a hex code. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0.026;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Shared section eyebrow — small mono label above each section heading.
+   Alignment inherits from the section (centered vs left). */
+.section-eyebrow {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.6rem;
+}
+
+.section-eyebrow::before {
+  content: '// ';
+  opacity: 0.55;
+}
+
+/* Scroll-reveal: sections start slightly low + transparent, and an
+   IntersectionObserver in App.jsx adds .is-visible as they enter view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 #root {
@@ -69,12 +146,13 @@ h1 {
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: 30px;
+  font-weight: 600;
   line-height: 118%;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.02em;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 p {

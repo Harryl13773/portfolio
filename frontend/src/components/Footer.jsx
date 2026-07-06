@@ -1,5 +1,8 @@
 import './Footer.css';
 
+// Single source of truth — bump "version" in package.json and this updates
+import { version } from '../../package.json';
+
 // Fill these in with your real links
 const EMAIL = 'lian.000155@gmail.com';
 const LINKEDIN = 'https://www.linkedin.com/in/harry-lian/';
@@ -8,6 +11,9 @@ const GITHUB = 'https://github.com/Harryl13773';
 function Footer() {
   return (
     <footer className="footer">
+      <span className="site-version" aria-hidden="true">
+        v{version}
+      </span>
       <div className="footer-links">
         <a className="footer-link" href={`mailto:${EMAIL}`}>
           <svg

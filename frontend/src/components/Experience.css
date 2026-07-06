@@ -5,10 +5,18 @@
   text-align: left;
 }
 
+.experience-eyebrow {
+  text-align: center; /* container is text-left; eyebrow matches the heading */
+}
+
 .experience-heading {
   color: var(--text-h);
-  margin-bottom: 2rem;
+  margin: 0 0 2rem;
   text-align: center;
+}
+
+.experience-heading.reveal {
+  transition-delay: 0.08s; /* trails the eyebrow slightly */
 }
 
 /* The timeline: a vertical line on the left, one dot per job */
@@ -37,6 +45,11 @@
   padding-bottom: 2.5rem;
 }
 
+/* When both items enter the viewport together, cascade them */
+.experience-item.reveal:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
 .experience-item:last-child {
   padding-bottom: 0;
 }
@@ -52,6 +65,7 @@
   border-radius: 50%;
   background: var(--bg);
   border: 2px solid var(--accent);
+  box-shadow: 0 0 10px var(--accent-bg);
 }
 
 .experience-content {
@@ -75,9 +89,10 @@
 }
 
 .experience-dates {
+  font-family: var(--mono);
   color: var(--text);
   opacity: 0.8;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   white-space: nowrap;
 }
 
@@ -114,7 +129,8 @@
 }
 
 .experience-pill {
-  font-size: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
   color: var(--text-h);
   background: var(--code-bg);
   padding: 4px 10px;

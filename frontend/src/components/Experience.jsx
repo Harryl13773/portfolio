@@ -32,11 +32,14 @@ const JOBS = [
 function Experience() {
   return (
     <div className="experience">
-      <h2 className="experience-heading">Experience</h2>
+      <span className="section-eyebrow experience-eyebrow reveal">
+        Experience
+      </span>
+      <h2 className="experience-heading reveal">Where I&apos;ve Worked</h2>
 
       <ol className="experience-list">
         {JOBS.map((job) => (
-          <li key={job.id} className="experience-item">
+          <li key={job.id} className="experience-item reveal">
             <div className="experience-marker" aria-hidden="true" />
 
             <div className="experience-content">

@@ -6,14 +6,45 @@
 .section-title {
   font-size: 13px;
   font-weight: 500;
-  color: #6a6a6a;
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 0;
   padding-bottom: 12px;
-  border-bottom: 1px solid #2a2a2a;   /* thin line under the section label */
+  border-bottom: 1px solid var(--border);   /* thin line under the section label */
 }
 
 .app-main {
   padding-top: 72px; /* height of the fixed navbar */
+}
+
+/* Projects section — constrained like Experience, cards spaced by the grid */
+.projects-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2rem;
+  box-sizing: border-box;
+}
+
+.projects-heading {
+  margin-bottom: 2rem;
+}
+
+.projects-heading.reveal {
+  transition-delay: 0.08s; /* trails the eyebrow slightly */
+}
+
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Cards that enter the viewport together cascade instead of popping at once */
+.projects-grid > .reveal:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.projects-grid > .reveal:nth-child(3) {
+  transition-delay: 0.2s;
 }

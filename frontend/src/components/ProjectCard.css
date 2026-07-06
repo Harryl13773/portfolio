@@ -1,22 +1,47 @@
+/* Project card — bordered surface with a gradient hairline that fades in
+   on hover (the site's one signature flourish). All colors come from the
+   variables in index.css — never hardcode hex here. */
 .project-card {
+  position: relative;
   width: 100%;
-  background: #0d0d0d;        /* match page background — no visible card bg */
-  border-bottom: 1px solid #2a2a2a;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-  padding: 32px 48px;
-  transition: background 0.2s ease;
+  background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 32px;
   box-sizing: border-box;
+  text-align: left;
+}
+
+/* The gradient hairline: a 1px ring drawn by a masked pseudo-element,
+   sitting exactly on top of the base border. Invisible until hover. */
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;                /* covers the base border */
+  border-radius: 12px;
+  padding: 1px;               /* ring thickness */
+  background: linear-gradient(135deg, var(--accent), transparent 65%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .project-card:hover {
-  background: #141414;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -12px var(--accent-bg);
+}
+
+.project-card:hover::before {
+  opacity: 1;
 }
 
 .project-left {
@@ -26,8 +51,9 @@
 }
 
 .project-title {
+  font-family: var(--heading);
   font-size: 17px;
-  color: #ffffff;
+  color: var(--text-h);
   margin: 0;
   font-weight: 600;
   line-height: 1.4;
@@ -42,27 +68,28 @@
 
 .project-description {
   font-size: 14px;
-  color: #a0a0a0;
+  color: var(--text);
   line-height: 1.6;
   margin: 0;
-  text-align: left;           /* left align description */
+  text-align: left;
 }
 
 /* Pills must explicitly be flex row or they collapse into text */
 .project-tech {
-  display: flex;              /* this was the missing fix */
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 6px;
 }
 
 .tech-pill {
+  font-family: var(--mono);
   font-size: 11px;
-  color: #c0c0c0;
-  background: #2a2a2a;
+  color: var(--text-h);
+  background: var(--code-bg);
   padding: 3px 10px;
   border-radius: 999px;
-  border: 1px solid #3a3a3a;
+  border: 1px solid var(--border);
 }
 
 .project-links {
@@ -71,12 +98,38 @@
 }
 
 .project-links a {
-  font-size: 13px;
-  color: #6ea8fe;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
   text-decoration: none;
   font-weight: 500;
 }
 
 .project-links a:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card::before {
+    transition: none;
+  }
+  .project-card:hover {
+    transform: none;
+  }
+}
+
+/* Stack title above content on small screens */
+@media (max-width: 700px) {
+  .project-card {
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 20px;
+  }
+
+  .project-left {
+    width: auto;
+    padding-top: 0;
+  }
 }

@@ -26,6 +26,29 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Reveal sections as they scroll into view (same pattern as the navbar's
+  // section highlighting). Re-runs after loading flips so project cards
+  // rendered from the fetch are observed too. Each element is revealed once.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -60px 0px' }
+    );
+
+    document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [loading]);
+
   return (
     <div className="app">
       <Navbar />
@@ -41,12 +64,15 @@ function App() {
         </section>
 
         <section id="projects" className="projects-section">
-          <h2 className="projects-heading">Projects</h2>
+          <span className="section-eyebrow reveal">Projects</span>
+          <h2 className="projects-heading reveal">Selected Work</h2>
           {loading && <p className="projects-message">Loading projects…</p>}
           {error && <p className="projects-message">{error}</p>}
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+          <div className="projects-grid">
+            {projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
         </section>
 
         <Contact />

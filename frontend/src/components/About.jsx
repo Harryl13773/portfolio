@@ -4,8 +4,12 @@ function About() {
   return (
     <section className="about">
 
-      {/* Hero — name and current role */}
+      {/* Hero — status, name, and current role */}
       <div className="about-hero">
+        <p className="about-status">
+          <span className="status-dot" aria-hidden="true" />
+          Welcome to my website! · Dayton, OH
+        </p>
         <h1 className="about-name">Harry Lian</h1>
         <p className="about-role">Computer Engineer · Full-Stack Developer</p>
       </div>

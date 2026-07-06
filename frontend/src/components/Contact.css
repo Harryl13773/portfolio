@@ -48,12 +48,13 @@
   font-size: 1rem;
   font-family: var(--sans);
   padding: 0.65rem 0.85rem;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-input:focus {
   outline: none;
   border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px var(--accent-bg);
 }
 
 .contact-textarea {

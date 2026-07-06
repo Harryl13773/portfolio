@@ -8,6 +8,22 @@
   margin-top: 2rem;
 }
 
+/* Version tag pinned to the bottom-right corner of the viewport.
+   pointer-events: none so it never blocks clicks on content beneath it. */
+.site-version {
+  position: fixed;
+  bottom: 0.9rem;
+  right: 1.25rem;
+  z-index: 100;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;

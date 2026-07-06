@@ -18,7 +18,7 @@
   {
     "id": 3,
     "title": "RAG API with Automated Quality Testing",
-    "description": "A FastAPI REST API implementing Retrieval-Augmented Generation — queries ChromaDB for nearest-neighbor context retrieval, augments prompts, and generates responses via a local Ollama (tinyllama) LLM. Includes a GitHub Actions CI/CD pipeline running automated semantic regression tests on every push.",
+    "description": "A FastAPI REST API implementing Retrieval-Augmented Generation - queries ChromaDB for nearest-neighbor context retrieval, augments prompts, and generates responses via a local Ollama (tinyllama) LLM. Includes a GitHub Actions CI/CD pipeline running automated semantic regression tests on every push.",
     "tech": ["Python", "FastAPI", "ChromaDB", "Ollama", "CI/CD"],
     "github": "https://github.com/Harryl13773/Rag-API-with-FastAPI",
     "live": ""

@@ -13,22 +13,123 @@
 .about-hero {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Availability badge — mono pill with a pulsing status dot */
+.about-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--code-bg);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--status);
+  animation: status-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--status) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px transparent;
+  }
 }
 
 .about-name {
-  font-size: 48px;
+  font-size: clamp(44px, 9vw, 84px);
   font-weight: 700;
-  color: var(--text-h);
   margin: 0;
-  letter-spacing: -1px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  /* Gradient reserved for the single most important string on the site —
+     background-position drifts slowly so the sheen moves across the name */
+  background: linear-gradient(
+    100deg,
+    var(--text-h) 20%,
+    var(--accent) 50%,
+    var(--text-h) 80%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: name-sheen 9s ease-in-out infinite alternate;
+}
+
+@keyframes name-sheen {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-name,
+  .status-dot {
+    animation: none;
+  }
 }
 
 .about-role {
-  font-size: 18px;
+  font-family: var(--mono);
+  font-size: 15px;
   color: var(--accent);
   margin: 0;
   font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Page-load stagger: name → role → bio → education → skills rise in
+   sequence. Runs once on load; the rest of the page uses scroll reveals. */
+@keyframes about-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.about > * {
+  animation: about-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.about > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.about > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.about > *:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about > * {
+    animation: none;
+  }
 }
 
 /* Bio paragraph — margin auto + centered text */
@@ -80,15 +181,16 @@
 
 /* Category label — fixed width so pills line up neatly */
 .skill-label {
-  font-size: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
   color: var(--text);
   opacity: 0.7;
   font-weight: 500;
   width: 100px;
   flex-shrink: 0;
-  padding-top: 6px;           /* aligns label baseline with first pill */
+  padding-top: 7px;           /* aligns label baseline with first pill */
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-align: right;          /* labels hug their pills */
 }
 
@@ -102,7 +204,8 @@
 }
 
 .skill-pill {
-  font-size: 13px;
+  font-family: var(--mono);
+  font-size: 12px;
   color: var(--text-h);
   background: var(--code-bg);
   padding: 5px 12px;
@@ -131,10 +234,6 @@
 @media (max-width: 600px) {
   .about {
     padding: 88px 20px 48px;
-  }
-
-  .about-name {
-    font-size: 36px;
   }
 
   .skill-group {

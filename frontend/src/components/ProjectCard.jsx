@@ -2,7 +2,7 @@ import './ProjectCard.css'
 
 function ProjectCard({ project }) {
   return (
-    <div className="project-card">
+    <div className="project-card reveal">
 
       {/* Left column — project title */}
       <div className="project-left">
