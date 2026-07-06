@@ -32,7 +32,7 @@ function About() {
         <div className="skill-group">
           <span className="skill-label">Languages</span>
           <div className="skill-pills">
-            {['Python', 'JavaScript', 'C++', 'C', 'Java', 'SQL', 'HTML/CSS'].map((s) => (
+            {['Python', 'JavaScript', 'C++', 'C', 'Java', 'SQL', 'MATLAB'].map((s) => (
               <span key={s} className="skill-pill">{s}</span>
             ))}
           </div>

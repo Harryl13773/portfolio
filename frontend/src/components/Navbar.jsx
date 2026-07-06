@@ -15,8 +15,7 @@ function Navbar() {
   const [activeSection, setActiveSection] = useState('about');
   const progressRef = useRef(null);
 
-  // Thin beam along the top edge tracking scroll progress.
-  // Writes transform directly (no state) so scrolling never re-renders.
+  // Thin beam along the top edge tracking scroll progress
   useEffect(() => {
     const onScroll = () => {
       const doc = document.documentElement;
