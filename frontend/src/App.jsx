@@ -26,9 +26,7 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Reveal sections as they scroll into view (same pattern as the navbar's
-  // section highlighting). Re-runs after loading flips so project cards
-  // rendered from the fetch are observed too. Each element is revealed once.
+  //revealing sections as users scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

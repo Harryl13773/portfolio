@@ -8,8 +8,7 @@
   margin-top: 2rem;
 }
 
-/* Version tag pinned to the bottom-right corner of the viewport.
-   pointer-events: none so it never blocks clicks on content beneath it. */
+/* version number */
 .site-version {
   position: fixed;
   bottom: 0.9rem;

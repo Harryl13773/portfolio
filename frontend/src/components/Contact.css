@@ -21,8 +21,7 @@
   gap: 1.25rem;
 }
 
-/* Honeypot: moved off-screen rather than display:none,
-   so bots that skip invisible fields still see it */
+/* Honeypot: bots can't see it */
 .contact-honeypot {
   position: absolute;
   left: -9999px;

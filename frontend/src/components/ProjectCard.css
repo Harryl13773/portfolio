@@ -1,6 +1,3 @@
-/* Project card — bordered surface with a gradient hairline that fades in
-   on hover (the site's one signature flourish). All colors come from the
-   variables in index.css — never hardcode hex here. */
 .project-card {
   position: relative;
   width: 100%;
@@ -17,8 +14,7 @@
   text-align: left;
 }
 
-/* The gradient hairline: a 1px ring drawn by a masked pseudo-element,
-   sitting exactly on top of the base border. Invisible until hover. */
+/* The hairline on top of the base border, invisble until hover*/
 .project-card::before {
   content: '';
   position: absolute;

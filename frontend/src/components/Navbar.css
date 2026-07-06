@@ -164,8 +164,7 @@
   }
 }
 
-/* On small screens a right rail crowds the content,
-   so it collapses to a slim fixed bar across the top instead. */
+/*rail crowds the content*/
 @media (max-width: 700px) {
   .navbar-name {
     top: 0.85rem;

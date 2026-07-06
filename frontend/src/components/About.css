@@ -9,7 +9,7 @@
   gap: 36px;
 }
 
-/* Name and role stacked centrally */
+/* name and role stacked centrally */
 .about-hero {
   display: flex;
   flex-direction: column;
@@ -17,7 +17,7 @@
   gap: 14px;
 }
 
-/* Availability badge — mono pill with a pulsing status dot */
+/* availability badge — mono pill with a pulsing status dot */
 .about-status {
   display: inline-flex;
   align-items: center;
@@ -57,8 +57,6 @@
   margin: 0;
   line-height: 1.05;
   letter-spacing: -0.03em;
-  /* Gradient reserved for the single most important string on the site —
-     background-position drifts slowly so the sheen moves across the name */
   background: linear-gradient(
     100deg,
     var(--text-h) 20%,
@@ -97,8 +95,7 @@
   letter-spacing: 0.02em;
 }
 
-/* Page-load stagger: name → role → bio → education → skills rise in
-   sequence. Runs once on load; the rest of the page uses scroll reveals. */
+/*Loading the page staggering and load once*/
 @keyframes about-rise {
   from {
     opacity: 0;
