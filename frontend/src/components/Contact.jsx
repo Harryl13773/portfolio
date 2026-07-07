@@ -47,7 +47,7 @@ function Contact() {
       <span className="section-eyebrow">Contact</span>
       <h2 className="contact-heading">Get In Touch</h2>
       <p className="contact-subtext">
-        Have a question or want to work together? Send a message.
+        Have questions or want to work together? Send a message.
       </p>
 
       <form className="contact-form" onSubmit={handleSubmit}>
