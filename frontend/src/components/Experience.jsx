@@ -53,7 +53,9 @@ function Experience() {
                 className="experience-logo"
                 src={job.logo}
                 alt={`${job.company} logo`}
-                loading="lazy"
+                width="46"
+                height="46"
+                decoding="async"
               />
             )}
 
