@@ -1,18 +1,35 @@
+import { useEffect, useState } from 'react';
 import './Footer.css';
 
-// Single source of truth — bump "version" in package.json and this updates
 import { version } from '../../package.json';
 
-// Fill these in with your real links
+// Same env convention as App.jsx and Contact.jsx
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 const EMAIL = 'lian.000155@gmail.com';
 const LINKEDIN = 'https://www.linkedin.com/in/harry-lian/';
 const GITHUB = 'https://github.com/Harryl13773';
 
 function Footer() {
+  const [visits, setVisits] = useState(null);
+
+  // Total visit count for the little footer counter
+  useEffect(() => {
+    fetch(`${API_URL}/api/visits`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && typeof data.total === 'number') setVisits(data.total);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <footer className="footer">
       <span className="site-version" aria-hidden="true">
         v{version}
+        {visits !== null && (
+          <span className="site-visits"> · {visits.toLocaleString()} visits</span>
+        )}
       </span>
       <div className="footer-links">
         <a className="footer-link" href={`mailto:${EMAIL}`}>

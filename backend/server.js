@@ -6,6 +6,8 @@ const express = require('express')
 const cors = require('cors')
 const projectRoutes = require('./routes/projects')
 const contactRoutes = require('./routes/contact')
+const visitsRouter = require('./routes/visits');
+
 
 //create Express app
 const app = express()
@@ -21,6 +23,8 @@ const allowedOrigins = [
   'https://portfolio.lian-000155.workers.dev', //origin URL
 ]
 app.use(cors({ origin: allowedOrigins }))
+
+app.use('/api', visitsRouter); //the API for database
 
 app.use(express.json()) //allow server to read JSON data sent in request bodies
 

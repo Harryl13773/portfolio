@@ -26,6 +26,14 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  //fire and forget idea
+  useEffect(() => {
+    if (!import.meta.env.PROD) return;
+    if (sessionStorage.getItem('visit-counted')) return;
+    sessionStorage.setItem('visit-counted', '1');
+    fetch(`${API_URL}/api/visit`, { method: 'POST' }).catch(() => {});
+  }, []);
+
   //revealing sections as users scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
