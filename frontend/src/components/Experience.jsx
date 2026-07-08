@@ -1,11 +1,16 @@
 import './Experience.css';
 
+// Company logos — Vite hashes and bundles these like the resume PDF
+import osuLogo from '../assets/OhioState.png';
+import realityAiLogo from '../assets/RealityAILab.png';
+
 // Positions from resume — newest first.
 const JOBS = [
   {
     id: 1,
     role: 'Electronic Devices Lab Monitor',
     company: 'The Ohio State University',
+    logo: osuLogo,
     dates: 'Sept. 2025 – May 2026',
     location: 'Columbus, OH',
     points: [
@@ -18,6 +23,7 @@ const JOBS = [
     id: 2,
     role: 'Software Developer Intern',
     company: 'Reality AI Lab',
+    logo: realityAiLogo,
     dates: 'May 2025 – Sept. 2025',
     location: 'Remote',
     points: [
@@ -41,6 +47,15 @@ function Experience() {
         {JOBS.map((job) => (
           <li key={job.id} className="experience-item reveal">
             <div className="experience-marker" aria-hidden="true" />
+
+            {job.logo && (
+              <img
+                className="experience-logo"
+                src={job.logo}
+                alt={`${job.company} logo`}
+                loading="lazy"
+              />
+            )}
 
             <div className="experience-content">
               <div className="experience-top">

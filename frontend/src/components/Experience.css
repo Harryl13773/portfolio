@@ -68,6 +68,19 @@
   box-shadow: 0 0 10px var(--accent-bg);
 }
 
+/* Company logo chip — sits between the timeline dot and the text.
+   Each logo keeps its own baked-in background (OSU light, Reality AI dark);
+   the shared border and radius keep them looking like a matched set. */
+.experience-logo {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  object-fit: cover;
+}
+
 .experience-content {
   flex: 1;
   min-width: 0;
@@ -141,6 +154,16 @@
 @media (max-width: 600px) {
   .experience {
     padding: 3rem 1rem 1.5rem;
+  }
+
+  .experience-item {
+    gap: 0.9rem;
+  }
+
+  .experience-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
   }
 
   .experience-top {
