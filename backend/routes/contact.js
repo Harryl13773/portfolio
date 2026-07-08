@@ -2,15 +2,17 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
+const { configured: redisConfigured, redis } = require('../lib/redis');
 
 const router = express.Router();
 
+// Local-dev fallback storage for contact messages
 const MESSAGES_FILE = path.join(__dirname, '..', 'data', 'messages.json');
 
-// basic email shape check (not exhaustive, just sanity)
+// Basic email shape check
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// rate limiter: max 5 submissions per IP per hour
+// Rate limiter: max 5 submissions per IP per hour
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5,
@@ -21,8 +23,7 @@ const contactLimiter = rateLimit({
   },
 });
 
-
-//escape user input before putting it into email HTML
+// Escape user input before it goes into email HTML
 function escapeHtml(str) {
   return str
     .replace(/&/g, '&amp;')
@@ -32,13 +33,12 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-
-//Resend's HTTP API
+// Send the owner a notification email via Resend's HTTP API
 async function sendNotificationEmail({ name, email, message }) {
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL;
 
-  // not configured
+  // Skip silently when email isn't configured (local dev)
   if (!apiKey || !toEmail) {
     console.log('Email not configured (RESEND_API_KEY / CONTACT_TO_EMAIL missing) — skipping notification.');
     return;
@@ -57,7 +57,7 @@ async function sendNotificationEmail({ name, email, message }) {
     body: JSON.stringify({
       from: 'Portfolio Contact <onboarding@resend.dev>',
       to: [toEmail],
-      reply_to: email, // hitting "Reply" in your inbox replies to the sender
+      reply_to: email, // "Reply" in the inbox goes to the sender
       subject: `Portfolio message from ${name}`,
       text: `From: ${name} <${email}>\n\n${message}`,
       html: `
@@ -74,17 +74,17 @@ async function sendNotificationEmail({ name, email, message }) {
   }
 }
 
-// POST /api/contact
+// POST /api/contact — validate, save, and email a contact form submission
 router.post('/', contactLimiter, async (req, res) => {
   const { name, email, message, company } = req.body || {};
 
-  // Honeypot check
+  // Honeypot check — bots fill the hidden "company" field, humans never see it
   if (company) {
     console.log('Honeypot triggered — dropping bot submission.');
     return res.status(201).json({ success: true });
   }
 
-  // validation
+  // Validate presence, types, and lengths
   if (!name || !email || !message) {
     return res
       .status(400)
@@ -109,29 +109,33 @@ router.post('/', contactLimiter, async (req, res) => {
       .json({ error: 'Message must be between 10 and 2000 characters.' });
   }
 
-  //save the message
+  // Build the message record (newlines stripped from name so it's safe in the email subject)
   const newMessage = {
     id: Date.now(),
-    name: name.trim(),
+    name: name.trim().replace(/[\r\n]+/g, ' '),
     email: email.trim(),
     message: message.trim(),
     receivedAt: new Date().toISOString(),
   };
 
-  //save email
+  // Save to Redis in production (host disk is wiped on deploy); local JSON file otherwise
   try {
-    let messages = [];
-    if (fs.existsSync(MESSAGES_FILE)) {
-      messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf-8'));
+    if (redisConfigured) {
+      await redis([['RPUSH', 'contact:messages', JSON.stringify(newMessage)]]);
+    } else {
+      let messages = [];
+      if (fs.existsSync(MESSAGES_FILE)) {
+        messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf-8'));
+      }
+      messages.push(newMessage);
+      fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
     }
-    messages.push(newMessage);
-    fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
   } catch (err) {
     console.error('Failed to save contact message:', err);
     return res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 
-  // try to email, if it fails, the message is saved, and the user gets success
+  // Email failures are only logged — the message is already saved
   try {
     await sendNotificationEmail(newMessage);
     console.log(`Notification email sent for message from ${newMessage.name}.`);

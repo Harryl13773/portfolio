@@ -1,44 +1,43 @@
-//loading environment variables from .env
-require('dotenv').config()
+// Load environment variables from .env
+require('dotenv').config();
 
-//import packages
-const express = require('express')
-const cors = require('cors')
-const projectRoutes = require('./routes/projects')
-const contactRoutes = require('./routes/contact')
-const visitsRouter = require('./routes/visits');
+// Import packages
+const express = require('express');
+const cors = require('cors');
+const projectRoutes = require('./routes/projects');
+const contactRoutes = require('./routes/contact');
+const visitsRoutes = require('./routes/visits');
 
+// Create the Express app
+const app = express();
 
-//create Express app
-const app = express()
+// Trust Render's proxy so rate limiters see real visitor IPs
+app.set('trust proxy', 1);
 
-//able to read real visitor's IP for the rate limiter to work
-app.set('trust proxy', 1)
-
-// add/remove entries as your domains change.
+// CORS allowlist — add/remove entries as domains change
 const allowedOrigins = [
-  'http://localhost:5173',        // local dev
-  'https://harrylian.com',        // production
-  'https://www.harrylian.com',    // production (www)
-  'https://portfolio.lian-000155.workers.dev', //origin URL
-]
-app.use(cors({ origin: allowedOrigins }))
+  'http://localhost:5173',                     // local dev
+  'https://harrylian.com',                     // production
+  'https://www.harrylian.com',                 // production (www)
+  'https://portfolio.lian-000155.workers.dev', // origin URL
+];
 
-app.use('/api', visitsRouter); //the API for database
+// Middleware — registered before the routes that rely on it
+app.use(cors({ origin: allowedOrigins }));
+app.use(express.json()); // parse JSON request bodies
 
-app.use(express.json()) //allow server to read JSON data sent in request bodies
-
-// a test route (also useful as a health check after deploying)
+// Health check route
 app.get('/', (req, res) => {
-  res.send('Portfolio API is running!')
-})
+  res.send('Portfolio API is running!');
+});
 
-//routes
-app.use('/api/projects', projectRoutes)  //GET /api/projects
-app.use('/api/contact', contactRoutes)   //POST /api/contact
+// Routes
+app.use('/api', visitsRoutes);           // POST /api/visit, GET /api/visits
+app.use('/api/projects', projectRoutes); // GET /api/projects
+app.use('/api/contact', contactRoutes);  // POST /api/contact
 
-//use the PORT from the .env file, or default to 3001 if not set
-const PORT = process.env.PORT || 3001
+// Use PORT from .env, defaulting to 3001
+const PORT = process.env.PORT || 3001;
 
-//starting server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+// Start the server
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

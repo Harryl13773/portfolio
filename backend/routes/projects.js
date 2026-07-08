@@ -1,17 +1,14 @@
-//using Express's Routers to define routes
-const express = require('express')
-const router = express.Router()
+// Router for the portfolio projects list
+const express = require('express');
+const router = express.Router();
 
-//Node's built-in module for working with file paths
-const path = require('path')
+// Load project data (require resolves relative to this file)
+const projects = require('../data/projects.json');
 
-//loading project data
-const projects = require(path.join(__dirname, '../data/projects.json'))
+// GET /api/projects — return the list of projects
+router.get('/', (req, res) => {
+  res.json(projects);
+});
 
-//return the list of projects
-router.get('/', (req, res)=>{
-    res.json(projects)
-})
-
-//export this router so server.js can use it
-module.exports = router
+// Export this router so server.js can use it
+module.exports = router;

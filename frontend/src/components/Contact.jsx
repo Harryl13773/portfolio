@@ -4,7 +4,7 @@ import './Contact.css';
 // "company" is the honeypot — hidden from humans, tempting to bots
 const INITIAL_FORM = { name: '', email: '', message: '', company: '' };
 
-// comes from .env files: localhost in dev, your Render URL in production
+// API base URL: localhost in dev, Render URL in production builds
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 function Contact() {
@@ -28,10 +28,11 @@ function Contact() {
         body: JSON.stringify(form),
       });
 
-      const data = await res.json();
+      // The error response may not be JSON (e.g. an HTML page from the host)
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong.');
+        throw new Error(data.error || 'Something went wrong. Please try again.');
       }
 
       setStatus('success');

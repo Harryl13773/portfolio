@@ -3,7 +3,7 @@ import './Footer.css';
 
 import { version } from '../../package.json';
 
-// Same env convention as App.jsx and Contact.jsx
+// API base URL: localhost in dev, Render URL in production builds
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const EMAIL = 'lian.000155@gmail.com';
@@ -13,7 +13,7 @@ const GITHUB = 'https://github.com/Harryl13773';
 function Footer() {
   const [visits, setVisits] = useState(null);
 
-  // Total visit count for the little footer counter
+  // Fetch the total visit count for the footer counter
   useEffect(() => {
     fetch(`${API_URL}/api/visits`)
       .then((res) => (res.ok ? res.json() : null))

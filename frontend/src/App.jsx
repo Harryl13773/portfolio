@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 import Experience from './components/Experience';
 import './App.css';
 
-// Comes from .env files: localhost in dev, your Render URL in production
+// API base URL: localhost in dev, Render URL in production builds
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  //fire and forget idea
+  // Count one visit per browser session (production builds only)
   useEffect(() => {
     if (!import.meta.env.PROD) return;
     if (sessionStorage.getItem('visit-counted')) return;
@@ -34,7 +34,7 @@ function App() {
     fetch(`${API_URL}/api/visit`, { method: 'POST' }).catch(() => {});
   }, []);
 
-  //revealing sections as users scroll
+  // Reveal sections as the user scrolls
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

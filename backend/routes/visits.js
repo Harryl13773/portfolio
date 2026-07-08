@@ -1,37 +1,17 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const { configured, redis } = require('../lib/redis');
 
 const router = express.Router();
 
-// declare variables
-const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
-const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
-const configured = Boolean(UPSTASH_URL && UPSTASH_TOKEN);
-
-// Runs an array of Redis commands in one HTTP round trip
-async function redis(commands) {
-  const res = await fetch(`${UPSTASH_URL}/pipeline`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${UPSTASH_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(commands),
-  });
-  if (!res.ok) {
-    throw new Error(`Upstash responded ${res.status}`);
-  }
-  return res.json(); // -> [{ result: ... }, ...] in command order
-}
-
-// Day buckets in Eastern time (site owner's timezone), formatted YYYY-MM-DD
+// Day bucket key in Eastern time, formatted YYYY-MM-DD
 function todayKey() {
   return new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/New_York',
   }).format(new Date());
 }
 
-// Generous limit — the frontend only beacons once per browser session
+// Rate limiter for the visit beacon (frontend only fires once per browser session)
 const visitLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 30,
@@ -54,11 +34,23 @@ router.post('/visit', visitLimiter, async (req, res) => {
   res.status(204).end();
 });
 
-// GET /api/visits — totals for display / checking the numbers
-router.get('/visits', async (req, res) => {
+// Rate limiter for the stats endpoint
+const statsLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// GET /api/visits — public totals; daily breakdown requires "Authorization: Bearer <STATS_TOKEN>"
+router.get('/visits', statsLimiter, async (req, res) => {
   if (!configured) {
     return res.status(503).json({ error: 'Visit tracking not configured' });
   }
+
+  const statsToken = process.env.STATS_TOKEN;
+  const isOwner =
+    Boolean(statsToken) && req.get('authorization') === `Bearer ${statsToken}`;
 
   try {
     const [totalRes, dailyRes] = await redis([
@@ -73,11 +65,13 @@ router.get('/visits', async (req, res) => {
       daily[flat[i]] = Number(flat[i + 1]);
     }
 
-    res.json({
+    const payload = {
       total: Number(totalRes.result || 0),
       today: daily[todayKey()] || 0,
-      daily,
-    });
+    };
+    if (isOwner) payload.daily = daily;
+
+    res.json(payload);
   } catch (err) {
     console.error('Visit stats failed:', err.message);
     res.status(502).json({ error: 'Visit stats unavailable' });
