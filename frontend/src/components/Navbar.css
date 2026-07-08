@@ -1,5 +1,4 @@
-/* Scroll progress beam — 2px accent line along the very top edge that
-   fills as you read. transform-driven so it's GPU-cheap. */
+/* Scroll progress beam */
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -74,8 +73,6 @@
   outline-offset: 3px;
 }
 
-/* Vertical nav pinned to the right edge, centered vertically.
-   position: fixed anchors it to the viewport, so it never moves on scroll. */
 .side-nav {
   position: fixed;
   top: 50%;
@@ -164,7 +161,7 @@
   }
 }
 
-/*rail crowds the content*/
+/* On small screens the right rail becomes a floating bottom dock */
 @media (max-width: 700px) {
   .navbar-name {
     top: 0.85rem;
@@ -172,26 +169,43 @@
     font-size: 1rem;
   }
 
-  .side-nav {
-    top: 0;
-    right: 0;
-    left: 0;
-    transform: none;
-    display: flex;
-    justify-content: flex-end;
-    /* extra right padding leaves room for the resume pill in the corner */
-    padding: 0.75rem 6.25rem 0.75rem 1rem;
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
-  }
-
   .resume-button {
-    top: 0.5rem;
+    top: 0.6rem;
     right: 0.75rem;
     padding: 0.35rem 0.8rem;
     font-size: 0.85rem;
-    backdrop-filter: none;
+  }
+
+  .side-nav {
+    top: auto;
+    right: auto;
+    left: 50%;
+    bottom: calc(0.85rem + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    max-width: calc(100vw - 1.25rem);
+    padding: 0.3rem;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+  }
+
+  .side-nav-links {
+    flex-direction: row;
+    gap: 0.1rem;
+    flex-wrap: nowrap;
+  }
+
+  .side-nav-link {
+    padding: 0.55rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    justify-content: center;
+    transition: color 0.2s ease, background 0.2s ease;
   }
 
   .side-nav-indicator,
@@ -201,7 +215,15 @@
 
   .side-nav-link-active {
     color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 5px;
+    background: var(--accent-bg);
+  }
+}
+
+/* Very narrow screens (older/smaller phones): tighten further */
+@media (max-width: 360px) {
+  .side-nav-link {
+    padding: 0.5rem 0.55rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.03em;
   }
 }

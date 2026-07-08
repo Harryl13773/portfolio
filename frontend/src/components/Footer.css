@@ -77,3 +77,16 @@
     transform: none;
   }
 }
+
+/* On small screen feature */
+@media (max-width: 700px) {
+  .footer {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-version {
+    position: static;
+    order: 3; /* footer is a flex column: links, note, then version */
+    opacity: 0.4;
+  }
+}
