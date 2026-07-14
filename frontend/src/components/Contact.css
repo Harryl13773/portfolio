@@ -88,9 +88,9 @@
 }
 
 .contact-status-success {
-  color: #6fcf7a;
+  color: var(--success);
 }
 
 .contact-status-error {
-  color: #e5736f;
+  color: var(--error);
 }

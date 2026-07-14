@@ -11,9 +11,63 @@ const LINKS = [
   { label: 'Contact', target: 'contact' },
 ];
 
+// Applies a theme to the DOM (html attribute + browser-chrome color); shared by the toggle and the system listener
+function applyThemeDom(next) {
+  if (next === 'light') {
+    document.documentElement.dataset.theme = 'light';
+  } else {
+    delete document.documentElement.dataset.theme;
+  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) {
+    meta.setAttribute('content', next === 'light' ? '#f6f7f9' : '#16171d');
+  }
+}
+
 function Navbar() {
   const [activeSection, setActiveSection] = useState('about');
   const progressRef = useRef(null);
+
+  // State mirrors <html data-theme>, already set pre-paint by the index.html script
+  const [theme, setTheme] = useState(() =>
+    document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+  );
+
+  // Manual toggle: applies and persists, overriding the machine preference from then on
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    applyThemeDom(next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      // storage unavailable — theme still applies for this visit
+    }
+  };
+
+  // Follows the machine live (e.g. OS auto day/night switch) as long as the user hasn't toggled manually
+  useEffect(() => {
+    applyThemeDom(
+      document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+    ); // syncs the theme-color meta with the pre-paint pick
+
+    const mq = window.matchMedia('(prefers-color-scheme: light)');
+    const onChange = (e) => {
+      let stored = null;
+      try {
+        stored = localStorage.getItem('theme');
+      } catch {
+        // storage unavailable — treat as no override
+      }
+      if (stored) return;
+      const next = e.matches ? 'light' : 'dark';
+      setTheme(next);
+      applyThemeDom(next);
+    };
+
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   // Thin beam along the top edge tracking scroll progress
   useEffect(() => {
@@ -75,15 +129,52 @@ function Navbar() {
         Harry L.
       </button>
 
-      <a
-        className="resume-button"
-        href={resumePdf}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Resume
-        <span className="resume-button-arrow" aria-hidden="true">↗</span>
-      </a>
+      <div className="top-right">
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={
+            theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+          }
+        >
+          {theme === 'dark' ? (
+            /* sun — shows what clicking switches to */
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4.2" />
+              <path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M18.7 5.3L17 7M7 17l-1.7 1.7" />
+            </svg>
+          ) : (
+            /* moon */
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" />
+            </svg>
+          )}
+        </button>
+
+        <a
+          className="resume-button"
+          href={resumePdf}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Resume
+          <span className="resume-button-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <nav className="side-nav" aria-label="Section navigation">
         <ul className="side-nav-links">

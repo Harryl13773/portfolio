@@ -2,6 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Pre-paint theme pick (avoids wrong-theme flash): user's stored toggle choice wins, else follow the machine's light/dark appearance
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var light = stored
+            ? stored === 'light'
+            : window.matchMedia('(prefers-color-scheme: light)').matches;
+          if (light) document.documentElement.dataset.theme = 'light';
+        } catch (e) {
+          // storage/matchMedia unavailable — stay dark
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/src/assets/initials.ico" />
     <meta
       name="viewport"

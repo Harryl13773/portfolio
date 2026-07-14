@@ -13,8 +13,7 @@
   --shadow:
     rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
-  /* Typography: Inter for body, Space Grotesk for headings,
-     JetBrains Mono for labels/dates/pills (the "engineered" accent) */
+  /* Typography: Inter body, Space Grotesk headings, JetBrains Mono for labels/dates/pills (the technical accent) */
   --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: 'Space Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
@@ -23,6 +22,8 @@
   --glow: rgba(192, 132, 252, 0.12);
   --grid-dot: rgba(243, 244, 246, 0.035);
   --status: #4ade80; /* availability-badge dot (green) */
+  --success: #6fcf7a; /* contact form status messages */
+  --error: #e5736f;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -39,9 +40,26 @@
   }
 }
 
-/* This lived inside the dark media query before — now dark is always on */
-#social .button-icon {
-  filter: invert(1) brightness(2);
+/* Light theme via data-theme="light" on <html> (dark is default); deeper purple accent because #c084fc fails contrast on white */
+[data-theme='light'] {
+  --text: #4b5563;
+  --text-h: #111827;
+  --bg: #f6f7f9;
+  --bg-elevated: #ffffff;
+  --border: #e2e4ea;
+  --code-bg: #eceef3;
+  --accent: #7c3aed;
+  --accent-bg: rgba(124, 58, 237, 0.09);
+  --accent-border: rgba(124, 58, 237, 0.45);
+  --social-bg: rgba(226, 228, 234, 0.6);
+  --shadow:
+    rgba(17, 24, 39, 0.08) 0 10px 15px -3px, rgba(17, 24, 39, 0.05) 0 4px 6px -2px;
+  --glow: rgba(124, 58, 237, 0.08);
+  --grid-dot: rgba(17, 24, 39, 0.05);
+  --status: #16a34a;
+  --success: #15803d;
+  --error: #dc2626;
+  color-scheme: light;
 }
 
 body {
@@ -51,8 +69,7 @@ body {
   background-size: 32px 32px;
 }
 
-/* Soft purple glow anchored behind the hero. Fixed so it stays put on
-   scroll; z-index -1 keeps it behind all content but above the dot grid. */
+/* Hero glow: fixed so it stays put on scroll, z-index -1 keeps it behind content but above the dot grid */
 body::before {
   content: '';
   position: fixed;
@@ -66,8 +83,7 @@ body::before {
   );
 }
 
-/* Film grain — a whisper of SVG noise over everything. This is what makes
-   flat dark surfaces feel like a material instead of a hex code. */
+/* Film grain: faint SVG noise overlay that makes flat surfaces feel like a material */
 body::after {
   content: '';
   position: fixed;
@@ -78,8 +94,7 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Shared section eyebrow — small mono label above each section heading.
-   Alignment inherits from the section (centered vs left). */
+/* Section eyebrow: small mono label above headings; text alignment inherits from each section */
 .section-eyebrow {
   display: block;
   font-family: var(--mono);
@@ -96,8 +111,7 @@ body::after {
   opacity: 0.55;
 }
 
-/* Scroll-reveal: sections start slightly low + transparent, and an
-   IntersectionObserver in App.jsx adds .is-visible as they enter view. */
+/* Scroll reveal: elements start low + transparent; the App.jsx observer adds .is-visible as they enter view */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
