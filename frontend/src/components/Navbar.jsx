@@ -20,7 +20,7 @@ function applyThemeDom(next) {
   }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.setAttribute('content', next === 'light' ? '#f6f7f9' : '#16171d');
+    meta.setAttribute('content', next === 'light' ? '#e5e4e2' : '#0a0a0a');
   }
 }
 

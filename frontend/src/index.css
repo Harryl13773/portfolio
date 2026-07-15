@@ -1,15 +1,15 @@
 :root {
-  /* Dark palette — now the one and only theme */
-  --text: #9ca3af;
-  --text-h: #f3f4f6;
-  --bg: #16171d;
-  --bg-elevated: #1f2028;
-  --border: #2e303a;
-  --code-bg: #1f2028;
-  --accent: #c084fc;
-  --accent-bg: rgba(192, 132, 252, 0.15);
-  --accent-border: rgba(192, 132, 252, 0.5);
-  --social-bg: rgba(47, 48, 58, 0.5);
+  /* Dark theme (default): Onyx #0A0A0A surfaces, Alabaster #E5E4E2 headings, Blue Slate accent lightened for contrast on near-black */
+  --text: #9ba4ab;
+  --text-h: #e5e4e2;
+  --bg: #0a0a0a;
+  --bg-elevated: #151617;
+  --border: #28292b;
+  --code-bg: #161718;
+  --accent: #8ba3b6;
+  --accent-bg: rgba(139, 163, 182, 0.13);
+  --accent-border: rgba(139, 163, 182, 0.5);
+  --social-bg: rgba(40, 41, 43, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
@@ -19,8 +19,8 @@
   --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
 
   /* Ambient depth (derived from --accent / --text-h — keep in sync) */
-  --glow: rgba(192, 132, 252, 0.12);
-  --grid-dot: rgba(243, 244, 246, 0.035);
+  --glow: rgba(139, 163, 182, 0.11);
+  --grid-dot: rgba(229, 228, 226, 0.035);
   --status: #4ade80; /* availability-badge dot (green) */
   --success: #6fcf7a; /* contact form status messages */
   --error: #e5736f;
@@ -40,22 +40,22 @@
   }
 }
 
-/* Light theme via data-theme="light" on <html> (dark is default); deeper purple accent because #c084fc fails contrast on white */
+/* Light theme via data-theme="light" on <html> (dark is default): Alabaster #E5E4E2 surfaces, Onyx #0A0A0A text, Blue Slate accent deepened slightly for contrast */
 [data-theme='light'] {
-  --text: #4b5563;
-  --text-h: #111827;
-  --bg: #f6f7f9;
-  --bg-elevated: #ffffff;
-  --border: #e2e4ea;
-  --code-bg: #eceef3;
-  --accent: #7c3aed;
-  --accent-bg: rgba(124, 58, 237, 0.09);
-  --accent-border: rgba(124, 58, 237, 0.45);
-  --social-bg: rgba(226, 228, 234, 0.6);
+  --text: #4f565c;
+  --text-h: #0a0a0a;
+  --bg: #e5e4e2;
+  --bg-elevated: #f2f1ef;
+  --border: #cfceca;
+  --code-bg: #dcdbd7;
+  --accent: #4e6272;
+  --accent-bg: rgba(83, 104, 120, 0.1);
+  --accent-border: rgba(83, 104, 120, 0.45);
+  --social-bg: rgba(207, 206, 202, 0.6);
   --shadow:
-    rgba(17, 24, 39, 0.08) 0 10px 15px -3px, rgba(17, 24, 39, 0.05) 0 4px 6px -2px;
-  --glow: rgba(124, 58, 237, 0.08);
-  --grid-dot: rgba(17, 24, 39, 0.05);
+    rgba(10, 10, 10, 0.09) 0 10px 15px -3px, rgba(10, 10, 10, 0.05) 0 4px 6px -2px;
+  --glow: rgba(83, 104, 120, 0.1);
+  --grid-dot: rgba(10, 10, 10, 0.05);
   --status: #16a34a;
   --success: #15803d;
   --error: #dc2626;
