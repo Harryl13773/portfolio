@@ -47,6 +47,7 @@ heading_ttf = ttf('node_modules/@fontsource/space-grotesk/files/space-grotesk-la
 mono_ttf = ttf('node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2', '/tmp/og-mono.ttf')
 
 # rendering
+W, H = 1200, 630
 img = Image.new('RGB', (W, H), BG)
 d = ImageDraw.Draw(img)
 
