@@ -72,9 +72,26 @@ function App() {
         <section id="projects" className="projects-section">
           <span className="section-eyebrow reveal">Projects</span>
           <h2 className="projects-heading reveal">Selected Work</h2>
-          {loading && <p className="projects-message">Loading projects…</p>}
           {error && <p className="projects-message">{error}</p>}
           <div className="projects-grid">
+            {loading &&
+              // Skeleton placeholders sized like real cards, so the Render cold start (~50s) shows structure instead of a blank gap
+              [1, 2, 3].map((n) => (
+                <div key={n} className="project-card project-card-skeleton" aria-hidden="true">
+                  <div className="project-left">
+                    <div className="skeleton-line skeleton-title" />
+                  </div>
+                  <div className="project-center">
+                    <div className="skeleton-line" />
+                    <div className="skeleton-line skeleton-short" />
+                    <div className="skeleton-pills">
+                      <div className="skeleton-pill" />
+                      <div className="skeleton-pill" />
+                      <div className="skeleton-pill" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}

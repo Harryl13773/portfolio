@@ -215,7 +215,6 @@
 .skill-pill:hover {
   border-color: var(--accent-border);
   background: var(--accent-bg);
-  transform: translateY(-1px);
 }
 
 @media (prefers-reduced-motion: reduce) {

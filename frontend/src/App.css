@@ -48,3 +48,59 @@
 .projects-grid > .reveal:nth-child(3) {
   transition-delay: 0.2s;
 }
+
+/* Skeleton loading state: card-shaped placeholders with a gentle pulse while the API wakes */
+.project-card-skeleton {
+  opacity: 1;
+  transform: none;
+  pointer-events: none;
+}
+
+.skeleton-line,
+.skeleton-pill {
+  background: var(--code-bg);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.skeleton-line {
+  height: 14px;
+  width: 100%;
+}
+
+.skeleton-title {
+  width: 70%;
+  height: 16px;
+}
+
+.skeleton-short {
+  width: 55%;
+}
+
+.skeleton-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.skeleton-pill {
+  width: 58px;
+  height: 22px;
+  border-radius: 999px;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line,
+  .skeleton-pill {
+    animation: none;
+  }
+}

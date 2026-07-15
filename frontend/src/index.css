@@ -25,6 +25,10 @@
   --success: #6fcf7a; /* contact form status messages */
   --error: #e5736f;
 
+  /* Radius scale: --radius for cards/surfaces, --radius-sm for inputs/chips, 999px for pills, 50% for circles — no other values */
+  --radius: 12px;
+  --radius-sm: 8px;
+
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: dark; /* browser UI (scrollbars, autofill, dialogs) renders dark */

@@ -75,7 +75,7 @@
   flex-shrink: 0;
   width: 46px;
   height: 46px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--code-bg);
   object-fit: cover;
@@ -163,7 +163,7 @@
   .experience-logo {
     width: 40px;
     height: 40px;
-    border-radius: 9px;
+    border-radius: var(--radius-sm);
   }
 
   .experience-top {

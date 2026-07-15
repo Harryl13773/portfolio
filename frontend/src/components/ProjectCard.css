@@ -3,7 +3,7 @@
   width: 100%;
   background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 28px 32px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
@@ -19,7 +19,7 @@
   content: '';
   position: absolute;
   inset: -1px;                /* covers the base border */
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 1px;               /* ring thickness */
   background: linear-gradient(135deg, var(--accent), transparent 65%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
