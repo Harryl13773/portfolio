@@ -83,7 +83,11 @@ function Footer() {
       </div>
 
       <p className="footer-note">
-        © {new Date().getFullYear()} Harry Lian · Built with React &amp; Express
+        © {new Date().getFullYear()} Harry Lian · Built with React &amp;
+        Express ·{' '}
+        <a className="footer-note-link" href="/privacy.html">
+          Privacy
+        </a>
       </p>
     </footer>
   );

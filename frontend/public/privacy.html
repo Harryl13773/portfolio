@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Same pre-paint theme pick as the main site: stored toggle choice wins, else machine preference
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var light = stored
+            ? stored === 'light'
+            : window.matchMedia('(prefers-color-scheme: light)').matches;
+          if (light) document.documentElement.dataset.theme = 'light';
+        } catch (e) {
+          /* stay dark */
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy — Harry Lian</title>
+    <meta name="description" content="Privacy policy for harrylian.com" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/initials.ico" />
+    <style>
+      /* Palette mirrors src/index.css — static page, so variables are duplicated here; keep in sync on rebrands */
+      :root {
+        --text: #9ba4ab;
+        --text-h: #e5e4e2;
+        --bg: #0a0a0a;
+        --border: #28292b;
+        --accent: #8ba3b6;
+        color-scheme: dark;
+      }
+      [data-theme='light'] {
+        --text: #4f565c;
+        --text-h: #0a0a0a;
+        --bg: #e5e4e2;
+        --border: #cfceca;
+        --accent: #4e6272;
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 17px/1.6 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem 5rem;
+      }
+      h1,
+      h2 {
+        color: var(--text-h);
+        line-height: 1.2;
+      }
+      h1 {
+        font-size: 2rem;
+        margin: 0 0 0.25rem;
+      }
+      h2 {
+        font-size: 1.15rem;
+        margin: 2.2rem 0 0.5rem;
+      }
+      p {
+        margin: 0 0 1rem;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+      }
+      .updated {
+        font-size: 0.85rem;
+        opacity: 0.7;
+        margin-bottom: 2rem;
+      }
+      .back {
+        display: inline-block;
+        margin-bottom: 2.5rem;
+        font-size: 0.9rem;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.4rem 1rem;
+        color: var(--text);
+      }
+      .back:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/">← Back to site</a>
+
+      <h1>Privacy</h1>
+      <p class="updated">Last updated: July 2026</p>
+
+      <p>
+        This is the personal portfolio of Harry Lian. It collects as little
+        data as possible. This page describes exactly what is collected and
+        why, in plain language.
+      </p>
+
+      <h2>Contact form</h2>
+      <p>
+        If you use the contact form, the name, email address, and message you
+        submit are used solely to read and respond to your inquiry. The
+        submission is delivered to me by email via Resend (an email delivery
+        service) and may be held temporarily on the server that powers this
+        site. It is never sold, shared for marketing, or used for anything
+        beyond replying to you. To have a submission deleted, email
+        <a href="mailto:lian.000155@gmail.com">lian.000155@gmail.com</a>.
+      </p>
+
+      <h2>Analytics and visit counting</h2>
+      <p>
+        This site uses Cloudflare Web Analytics, a cookieless, privacy-first
+        analytics tool that reports aggregate page views without tracking or
+        identifying individual visitors. Separately, the site keeps a simple
+        visit counter: an anonymous tally of total and per-day visits, with no
+        personal information attached. Your IP address is used momentarily for
+        rate limiting and standard server logs, and is not stored with any
+        counts.
+      </p>
+
+      <h2>Cookies and local storage</h2>
+      <p>
+        This site sets no tracking cookies. Your browser's local storage is
+        used for two functional things only: remembering your light/dark theme
+        choice, and a per-session flag so a visit isn't counted twice. Both
+        stay on your device and are never transmitted for tracking.
+      </p>
+
+      <h2>Infrastructure</h2>
+      <p>
+        The site is served by Cloudflare (hosting, DNS, and CDN) with an API
+        hosted on Render and counter storage on Upstash. Like all hosting
+        providers, these services process technical connection data (such as
+        IP addresses) as part of operating their networks.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If the site's data practices change, this page will be updated to
+        match.
+      </p>
+    </main>
+  </body>
+</html>
