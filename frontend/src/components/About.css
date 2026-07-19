@@ -3,6 +3,19 @@
   padding: 96px 48px 60px;
   max-width: 900px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 0fr; /* right track = course panel, closed */
+  transition: grid-template-columns 0.45s cubic-bezier(0.22, 1, 0.36, 1), max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Split view (desktop): content compresses left, panel opens right; section widens so the left column stays readable */
+.about-split {
+  max-width: 1150px;
+  grid-template-columns: 1fr 0.5fr;
+}
+
+.about-main {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;   /* centers every block inside */
@@ -107,24 +120,24 @@
   }
 }
 
-.about > * {
+.about-main > * {
   animation: about-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.about > *:nth-child(2) {
+.about-main > *:nth-child(2) {
   animation-delay: 0.08s;
 }
 
-.about > *:nth-child(3) {
+.about-main > *:nth-child(3) {
   animation-delay: 0.16s;
 }
 
-.about > *:nth-child(4) {
+.about-main > *:nth-child(4) {
   animation-delay: 0.24s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about > * {
+  .about-main > * {
     animation: none;
   }
 }
@@ -147,10 +160,173 @@
 }
 
 .about-school {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
   font-size: 15px;
-  color: var(--text-h);
   font-weight: 600;
+  color: var(--text-h);
+  transition: color 0.2s ease;
+}
+
+.about-school:hover {
+  color: var(--accent);
+}
+
+.about-school:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.school-chevron {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+  transition: transform 0.25s ease;
+}
+
+.school-chevron-open {
+  transform: rotate(180deg);
+}
+
+/* Coursework disclosure: grid-rows 0fr -> 1fr animates height without magic max-height numbers */
+.coursework {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.coursework-open {
+  grid-template-rows: 1fr;
+}
+
+.coursework-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.coursework-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.7;
+  margin: 1.1rem 0 0.6rem;
+}
+
+.coursework-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ECE left, CSE right */
+  gap: 1.1rem 2.25rem;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.coursework-dept {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.45rem;
+}
+
+.coursework-list {
+  list-style: none;
   margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.coursework-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 13px;
+}
+
+.coursework-code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.coursework-name {
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coursework,
+  .school-chevron {
+    transition: none;
+  }
+}
+
+/* Desktop course panel: lives in the section's right grid track */
+.about-panel {
+  min-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s;
+}
+
+.about-split .about-panel {
+  opacity: 1;
+}
+
+.about-panel-inner {
+  position: sticky;
+  top: 96px;
+  margin-top: 116px; /* aligns roughly with the hero name's baseline */
+  border-left: 1px solid var(--border);
+  padding-left: 1.5rem;
+}
+
+.about-panel .coursework-groups {
+  grid-template-columns: 1fr; /* narrow panel: groups stack with their dept headers */
+  gap: 1.25rem;
+}
+
+/* Breakpoint decides the presentation: >900px uses the side panel, <=900px uses the inline unfold */
+@media (min-width: 901px) {
+  .about-education .coursework {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .about,
+  .about-split {
+    grid-template-columns: 1fr; /* single column: panel track collapses entirely */
+    max-width: 900px;
+  }
+
+  .about-panel {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about,
+  .about-panel {
+    transition: none;
+  }
 }
 
 .about-degree {
@@ -230,6 +406,10 @@
 @media (max-width: 600px) {
   .about {
     padding: 88px 20px 48px;
+  }
+
+  .coursework-groups {
+    grid-template-columns: 1fr;
   }
 
   .skill-group {
