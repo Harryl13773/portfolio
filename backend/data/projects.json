@@ -1,5 +1,19 @@
 [
   {
+    "id": 4,
+    "title": "HAROLD: x86 Operating System",
+    "description": "A 32-bit x86 operating system built entirely from scratch, with its own bootloader handoff, preemptive scheduler, FAT16 filesystem, and a hand-rolled TCP/IP stack (ARP/IP/ICMP/UDP/TCP with RFC 6298 adaptive retransmission). Ships a 19-syscall ABI, custom libc, shell, and 22 userspace programs, including a mouse-driven GUI and a from-scratch neural net that runs inference with zero floating-point hardware.",
+    "tech": ["C", "x86 Assembly", "TCP/IP", "OS Development", "QEMU"],
+    "github": "https://github.com/Harryl13773/HAROLD",
+    "live": "",
+    "images": [
+      "/projects/harold/gui.png",
+      "/projects/harold/neural-net-inference.png",
+      "/projects/harold/shell-fat16.png",
+      "/projects/harold/boot.png"
+    ]
+  },
+  {
     "id": 1,
     "title": "Haptic Feedback VR Glove",
     "description": "Senior capstone project featuring a VR glove with real-time haptic and thermal feedback. Built BLE firmware on dual ESP32-S3 microcontrollers with bidirectional communication, automatic reconnection, and a custom multi-command packet parser to control 10 vibration motors and 2 Peltier thermal tiles synced with Unity.",
