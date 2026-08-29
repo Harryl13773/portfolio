@@ -49,6 +49,40 @@
   transition-delay: 0.2s;
 }
 
+.all-projects-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 2rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-h);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.all-projects-link:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.all-projects-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.all-projects-link-arrow {
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.all-projects-link:hover .all-projects-link-arrow {
+  transform: translateX(3px);
+}
+
 /* Skeleton loading state: card-shaped placeholders with a gentle pulse while the API wakes */
 .project-card-skeleton {
   opacity: 1;

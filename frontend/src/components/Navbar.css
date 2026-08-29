@@ -176,6 +176,13 @@
   background: var(--text);
 }
 
+/* Disable section tabs while a photo preview is open. */
+.side-nav-link:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
 .side-nav-link-active {
   color: var(--text-h);
 }

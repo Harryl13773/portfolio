@@ -5,6 +5,7 @@ import ProjectCard from './components/ProjectCard';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Experience from './components/Experience';
+import { handleNavClick } from './lib/navigate';
 import './App.css';
 
 // API base URL: localhost in dev, Render URL in production builds
@@ -14,6 +15,7 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const featuredProjects = projects.filter((project) => project.featured);
 
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
@@ -92,10 +94,21 @@ function App() {
                   </div>
                 </div>
               ))}
-            {projects.map((project) => (
+            {featuredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
           </div>
+
+          {!loading && !error && (
+            <a
+              href="/projects"
+              className="all-projects-link"
+              onClick={(e) => handleNavClick(e, '/projects')}
+            >
+              All Projects
+              <span className="all-projects-link-arrow" aria-hidden="true">→</span>
+            </a>
+          )}
         </section>
 
         <Contact />

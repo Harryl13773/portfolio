@@ -1,8 +1,39 @@
 [
   {
+    "id": 5,
+    "title": "Desk Dashboard: WiFi Ambient Display",
+    "description": [
+      "Engineered a single-cable WiFi desk display end-to-end: firmware, power electronics, and a 3D-printed enclosure",
+      "Wrote a custom MicroPython display driver for a 480x320 SPI IPS panel",
+      "Merged live weather and calendar data across four auto-refreshing screens",
+      "Root-caused a post-deployment power failure through current-budget analysis"
+    ],
+    "tech": ["MicroPython", "Raspberry Pi Pico 2W", "Embedded Systems", "SPI", "FreeCAD"],
+    "github": "https://github.com/Harryl13773/Desk-Dashboard",
+    "live": "",
+    "docs": "/projects/desk-dashboard/desk-dashboard-writeup.pdf",
+    "images": [
+      "/projects/desk-dashboard/dashboard_overview.jpg",
+      "/projects/desk-dashboard/dashboard_time.jpg",
+      "/projects/desk-dashboard/dashboard_agenda.jpg",
+      "/projects/desk-dashboard/dashboard_build_1.jpg",
+      "/projects/desk-dashboard/dashboard_build_2.jpg",
+      "/projects/desk-dashboard/dashboard_build_3.jpg",
+      "/projects/desk-dashboard/dashboard_build_4.jpg",
+      "/projects/desk-dashboard/system-architecture.svg",
+      "/projects/desk-dashboard/power-distribution.svg"
+    ]
+  },
+  {
     "id": 4,
     "title": "HAROLD: x86 Operating System",
-    "description": "A 32-bit x86 operating system built entirely from scratch, with its own bootloader handoff, preemptive scheduler, FAT16 filesystem, and a hand-rolled TCP/IP stack (ARP/IP/ICMP/UDP/TCP with RFC 6298 adaptive retransmission). Ships a 19-syscall ABI, custom libc, shell, and 22 userspace programs, including a mouse-driven GUI and a from-scratch neural net that runs inference with zero floating-point hardware.",
+    "featured": true,
+    "description": [
+      "Built a 32-bit x86 OS from scratch: bootloader handoff, preemptive scheduler, and FAT16 filesystem",
+      "Hand-rolled a TCP/IP stack (ARP/IP/ICMP/UDP/TCP) with RFC 6298 adaptive retransmission",
+      "Ships a 19-syscall ABI, custom libc, shell, and 22 userspace programs",
+      "Includes a mouse-driven GUI and a from-scratch neural net that runs inference with zero floating-point hardware"
+    ],
     "tech": ["C", "x86 Assembly", "TCP/IP", "OS Development", "QEMU"],
     "github": "https://github.com/Harryl13773/HAROLD",
     "live": "",
@@ -16,7 +47,12 @@
   {
     "id": 1,
     "title": "Haptic Feedback VR Glove",
-    "description": "Senior capstone project featuring a VR glove with real-time haptic and thermal feedback. Built BLE firmware on dual ESP32-S3 microcontrollers with bidirectional communication, automatic reconnection, and a custom multi-command packet parser to control 10 vibration motors and 2 Peltier thermal tiles synced with Unity.",
+    "featured": true,
+    "description": [
+      "Senior capstone project: a VR glove with real-time haptic and thermal feedback",
+      "Built BLE firmware on dual ESP32-S3 microcontrollers with bidirectional communication and automatic reconnection",
+      "Custom multi-command packet parser controlling 10 vibration motors and 2 Peltier thermal tiles, synced with Unity"
+    ],
     "tech": ["C++", "Arduino", "ESP32", "BLE", "PWM", "Unity"],
     "github": "",
     "live": ""
@@ -24,15 +60,27 @@
   {
     "id": 2,
     "title": "Autonomous Oxygen Management System",
-    "description": "1st Place winner at IEEE ProfHackathon (Track 3: Outlaws & Automation). A Python-controlled PLC simulating a space habitat oxygen tank that autonomously responds to demand fluctuations using a real-time Serial/Modbus control loop to adjust motor output via Variable Frequency Drive.",
+    "description": [
+      "1st Place winner, IEEE ProfHackathon (Track 3: Outlaws & Automation)",
+      "Python-controlled PLC simulating a space habitat oxygen tank",
+      "Autonomously responds to demand fluctuations via a real-time Serial/Modbus control loop",
+      "Adjusts motor output through a Variable Frequency Drive"
+    ],
     "tech": ["Python", "Modbus", "PLC", "VFD"],
     "github": "",
-    "live": ""
+    "live": "",
+    "images": ["/projects/oxygen-management/plc-final.jpg"]
   },
   {
     "id": 3,
     "title": "RAG API with Automated Quality Testing",
-    "description": "A FastAPI REST API implementing Retrieval-Augmented Generation - queries ChromaDB for nearest-neighbor context retrieval, augments prompts, and generates responses via a local Ollama (tinyllama) LLM. Includes a GitHub Actions CI/CD pipeline running automated semantic regression tests on every push.",
+    "featured": true,
+    "description": [
+      "FastAPI REST API implementing Retrieval-Augmented Generation (RAG)",
+      "Queries ChromaDB for nearest-neighbor context retrieval and augments prompts",
+      "Generates responses via a local Ollama (tinyllama) LLM",
+      "GitHub Actions CI/CD pipeline running automated semantic regression tests on every push"
+    ],
     "tech": ["Python", "FastAPI", "ChromaDB", "Ollama", "CI/CD"],
     "github": "https://github.com/Harryl13773/Rag-API-with-FastAPI",
     "live": ""

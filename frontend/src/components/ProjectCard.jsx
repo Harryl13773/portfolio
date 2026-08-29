@@ -1,30 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useLightbox } from '../lib/lightbox-context'
 import './ProjectCard.css'
 
 function ProjectCard({ project }) {
   const images = project.images || []
-  const [lightboxIndex, setLightboxIndex] = useState(null)
-
-  const closeLightbox = () => setLightboxIndex(null)
-  const showPrev = (e) => {
-    e.stopPropagation()
-    setLightboxIndex((i) => (i - 1 + images.length) % images.length)
-  }
-  const showNext = (e) => {
-    e.stopPropagation()
-    setLightboxIndex((i) => (i + 1) % images.length)
-  }
-
-  useEffect(() => {
-    if (lightboxIndex === null) return
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') closeLightbox()
-      if (e.key === 'ArrowLeft') setLightboxIndex((i) => (i - 1 + images.length) % images.length)
-      if (e.key === 'ArrowRight') setLightboxIndex((i) => (i + 1) % images.length)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [lightboxIndex, images.length])
+  const { openLightbox } = useLightbox()
 
   return (
     <div className="project-card reveal">
@@ -37,7 +16,7 @@ function ProjectCard({ project }) {
           <button
             type="button"
             className="project-thumb"
-            onClick={() => setLightboxIndex(0)}
+            onClick={() => openLightbox(images, 0, project.title)}
             aria-label={`View screenshots of ${project.title}`}
           >
             <img src={images[0]} alt={`${project.title} screenshot`} loading="lazy" />
@@ -50,7 +29,11 @@ function ProjectCard({ project }) {
 
       {/* Center column — description, pills, and links all stacked */}
       <div className="project-center">
-        <p className="project-description">{project.description}</p>
+        <ul className="project-description">
+          {project.description.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
 
         {/* Tech pills sit directly under the description */}
         <div className="project-tech">
@@ -67,26 +50,11 @@ function ProjectCard({ project }) {
           {project.live && (
             <a href={project.live} target="_blank" rel="noreferrer">Live Demo</a>
           )}
+          {project.docs && (
+            <a href={project.docs} target="_blank" rel="noreferrer">Report</a>
+          )}
         </div>
       </div>
-
-      {lightboxIndex !== null && (
-        <div className="lightbox-overlay" onClick={closeLightbox}>
-          <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label="Close">×</button>
-          {images.length > 1 && (
-            <button type="button" className="lightbox-nav lightbox-prev" onClick={showPrev} aria-label="Previous screenshot">‹</button>
-          )}
-          <img
-            className="lightbox-image"
-            src={images[lightboxIndex]}
-            alt={`${project.title} screenshot ${lightboxIndex + 1}`}
-            onClick={(e) => e.stopPropagation()}
-          />
-          {images.length > 1 && (
-            <button type="button" className="lightbox-nav lightbox-next" onClick={showNext} aria-label="Next screenshot">›</button>
-          )}
-        </div>
-      )}
 
     </div>
   )

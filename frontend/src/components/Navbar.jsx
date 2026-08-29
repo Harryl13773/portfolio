@@ -3,6 +3,8 @@ import './Navbar.css';
 
 // my resume
 import resumePdf from '../assets/resume.pdf';
+import { navigate } from '../lib/navigate';
+import { useLightbox } from '../lib/lightbox-context';
 
 const LINKS = [
   { label: 'About', target: 'about' },
@@ -24,8 +26,9 @@ function applyThemeDom(next) {
   }
 }
 
-function Navbar() {
+function Navbar({ page = 'home' }) {
   const [activeSection, setActiveSection] = useState('about');
+  const { isLightboxOpen } = useLightbox();
   const progressRef = useRef(null);
 
   // State mirrors <html data-theme>, already set pre-paint by the index.html script
@@ -91,6 +94,7 @@ function Navbar() {
 
   // Watch which section is currently on screen and highlight its tab
   useEffect(() => {
+    if (page !== 'home') return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -109,7 +113,7 @@ function Navbar() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [page]);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -124,7 +128,11 @@ function Navbar() {
 
       <button
         className="navbar-name"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={() =>
+          page === 'home'
+            ? window.scrollTo({ top: 0, behavior: 'smooth' })
+            : navigate('/')
+        }
       >
         Harry L.
       </button>
@@ -176,27 +184,30 @@ function Navbar() {
         </a>
       </div>
 
-      <nav className="side-nav" aria-label="Section navigation">
-        <ul className="side-nav-links">
-          {LINKS.map((link, i) => (
-            <li key={link.target}>
-              <button
-                className={
-                  'side-nav-link' +
-                  (activeSection === link.target ? ' side-nav-link-active' : '')
-                }
-                onClick={() => scrollTo(link.target)}
-              >
-                <span className="side-nav-index" aria-hidden="true">
-                  0{i + 1}
-                </span>
-                <span className="side-nav-indicator" aria-hidden="true" />
-                <span className="side-nav-label">{link.label}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {page === 'home' && (
+        <nav className="side-nav" aria-label="Section navigation">
+          <ul className="side-nav-links">
+            {LINKS.map((link, i) => (
+              <li key={link.target}>
+                <button
+                  className={
+                    'side-nav-link' +
+                    (activeSection === link.target ? ' side-nav-link-active' : '')
+                  }
+                  onClick={() => scrollTo(link.target)}
+                  disabled={isLightboxOpen}
+                >
+                  <span className="side-nav-index" aria-hidden="true">
+                    0{i + 1}
+                  </span>
+                  <span className="side-nav-indicator" aria-hidden="true" />
+                  <span className="side-nav-label">{link.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </>
   );
 }
