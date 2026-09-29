@@ -11,10 +11,10 @@ const visitsRoutes = require('./routes/visits');
 // Create the Express app
 const app = express();
 
-// Trust Render's proxy so rate limiters see real visitor IPs
+// Trust Render's proxy for real visitor IPs
 app.set('trust proxy', 1);
 
-// CORS allowlist — add/remove entries as domains change
+// Allowed CORS origins
 const allowedOrigins = [
   'http://localhost:5173',                     // local dev
   'https://harrylian.com',                     // production
@@ -22,9 +22,9 @@ const allowedOrigins = [
   'https://portfolio.lian-000155.workers.dev', // origin URL
 ];
 
-// Middleware — registered before the routes that rely on it
+// Middleware
 app.use(cors({ origin: allowedOrigins }));
-app.use(express.json()); // parse JSON request bodies
+app.use(express.json()); // Parse JSON bodies
 
 // Health check route
 app.get('/', (req, res) => {
@@ -36,7 +36,7 @@ app.use('/api', visitsRoutes);           // POST /api/visit, GET /api/visits
 app.use('/api/projects', projectRoutes); // GET /api/projects
 app.use('/api/contact', contactRoutes);  // POST /api/contact
 
-// Use PORT from .env, defaulting to 3001
+// Port from .env, default 3001
 const PORT = process.env.PORT || 3001;
 
 // Start the server

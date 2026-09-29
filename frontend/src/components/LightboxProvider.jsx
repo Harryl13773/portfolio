@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { LightboxContext } from '../lib/lightbox-context';
 import Lightbox from './Lightbox';
 
-// Tracks the active screenshot preview, allowing any ProjectCard to replace it
+// Provides the shared screenshot viewer state
 function LightboxProvider({ children }) {
   const [state, setState] = useState(null); // { images, index, title } | null
 

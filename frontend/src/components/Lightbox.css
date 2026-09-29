@@ -1,4 +1,4 @@
-/* Click-through lightbox overlay; the image and buttons remain interactive. */
+/* Screenshot viewer overlay */
 .lightbox-overlay {
   position: fixed;
   inset: 0;

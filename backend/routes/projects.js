@@ -2,13 +2,13 @@
 const express = require('express');
 const router = express.Router();
 
-// Load project data (require resolves relative to this file)
+// Load project data
 const projects = require('../data/projects.json');
 
-// GET /api/projects — return the list of projects
+// GET /api/projects: return all projects
 router.get('/', (req, res) => {
   res.json(projects);
 });
 
-// Export this router so server.js can use it
+// Export the router
 module.exports = router;

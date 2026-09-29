@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import './Experience.css';
 
-// Company logos — Vite hashes and bundles these like the resume PDF
+// Company logos
 import osuLogo from '../assets/OhioState.png';
 import realityAiLogo from '../assets/RealityAILab.png';
 
-// Positions from resume — newest first.
+// Positions, newest first
 const JOBS = [
   {
     id: 1,
@@ -36,61 +37,56 @@ const JOBS = [
 ];
 
 function Experience() {
+  const [selectedId, setSelectedId] = useState(JOBS[0].id);
+  const job = JOBS.find((j) => j.id === selectedId);
+
   return (
-    <div className="experience">
-      <span className="section-eyebrow experience-eyebrow reveal">
-        Experience
-      </span>
-      <h2 className="experience-heading reveal">Where I&apos;ve Worked</h2>
-
-      <ol className="experience-list">
-        {JOBS.map((job) => (
-          <li key={job.id} className="experience-item reveal">
-            <div className="experience-marker" aria-hidden="true" />
-
-            {job.logo && (
-              <img
-                className="experience-logo"
-                src={job.logo}
-                alt={`${job.company} logo`}
-                width="46"
-                height="46"
-                decoding="async"
-              />
-            )}
-
-            <div className="experience-content">
-              <div className="experience-top">
-                <h3 className="experience-role">{job.role}</h3>
-                <span className="experience-dates">{job.dates}</span>
-              </div>
-
-              <p className="experience-company">
-                {job.company}
-                {job.location && (
-                  <span className="experience-location"> · {job.location}</span>
-                )}
-              </p>
-
-              <ul className="experience-points">
-                {job.points.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
-
-              {job.tech && job.tech.length > 0 && (
-                <div className="experience-tech">
-                  {job.tech.map((t) => (
-                    <span key={t} className="experience-pill">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
+    <div className="split">
+      <ul className="picker">
+        {JOBS.map((j) => (
+          <li key={j.id}>
+            <button
+              className="picker-item"
+              aria-pressed={j.id === selectedId}
+              onClick={() => setSelectedId(j.id)}
+            >
+              <span className="picker-title">{j.role}</span>
+              <span className="picker-meta">{j.company}, {j.dates}</span>
+            </button>
           </li>
         ))}
-      </ol>
+      </ul>
+
+      <article key={job.id} className="experience-detail" aria-live="polite">
+        <div className="experience-head">
+          {job.logo && (
+            <img
+              className="experience-logo"
+              src={job.logo}
+              alt=""
+              width="44"
+              height="44"
+              decoding="async"
+            />
+          )}
+          <div>
+            <h2 className="detail-title">{job.role}</h2>
+            <p className="detail-meta">
+              {job.company}, {job.location}. {job.dates}
+            </p>
+          </div>
+        </div>
+
+        <ul className="detail-points">
+          {job.points.map((point, i) => (
+            <li key={i}>{point}</li>
+          ))}
+        </ul>
+
+        <p className="detail-tech">
+          <strong>Tools</strong> {job.tech.join(', ')}
+        </p>
+      </article>
     </div>
   );
 }

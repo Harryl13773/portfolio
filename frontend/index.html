@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <script>
-      // Pre-paint theme pick (avoids wrong-theme flash): user's stored toggle choice wins, else follow the machine's light/dark appearance
+      // Apply the saved or system theme before first paint
       (function () {
         try {
           var stored = localStorage.getItem('theme');
@@ -12,7 +12,7 @@
             : window.matchMedia('(prefers-color-scheme: light)').matches;
           if (light) document.documentElement.dataset.theme = 'light';
         } catch (e) {
-          // storage/matchMedia unavailable — stay dark
+          // Storage unavailable: stay dark
         }
       })();
     </script>
@@ -28,7 +28,7 @@
     />
     <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Open Graph — controls the LinkedIn/Slack/iMessage link preview -->
+    <!-- Open Graph link preview -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://harrylian.com" />
     <meta property="og:title" content="Harry Lian — Computer Engineer" />

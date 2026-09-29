@@ -1,6 +1,6 @@
 import './Lightbox.css';
 
-// Non-blocking centered viewer that allows interaction with the page behind it.
+// Screenshot viewer
 function Lightbox({ state, onClose, onPrev, onNext }) {
   if (!state) return null;
 

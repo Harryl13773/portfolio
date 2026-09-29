@@ -1,7 +1,8 @@
 :root {
-  /* Dark theme (default): Onyx #0A0A0A surfaces, Alabaster #E5E4E2 headings, Blue Slate accent lightened for contrast on near-black */
+  /* Dark theme colors (default) */
   --text: #9ba4ab;
   --text-h: #e5e4e2;
+  --text-dim: #5d6267; /* Inactive tabs */
   --bg: #0a0a0a;
   --bg-elevated: #151617;
   --border: #28292b;
@@ -9,45 +10,45 @@
   --accent: #8ba3b6;
   --accent-bg: rgba(139, 163, 182, 0.13);
   --accent-border: rgba(139, 163, 182, 0.5);
-  --social-bg: rgba(40, 41, 43, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
-  /* Typography: Inter body, Space Grotesk headings, JetBrains Mono for labels/dates/pills (the technical accent) */
+  /* Fonts */
   --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: 'Space Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
 
-  /* Ambient depth (derived from --accent / --text-h — keep in sync) */
-  --glow: rgba(139, 163, 182, 0.11);
-  --grid-dot: rgba(229, 228, 226, 0.035);
-  --status: #4ade80; /* availability-badge dot (green) */
-  --success: #6fcf7a; /* contact form status messages */
+  --success: #6fcf7a; /* Form success color */
   --error: #e5736f;
 
-  /* Radius scale: --radius for cards/surfaces, --radius-sm for inputs/chips, 999px for pills, 50% for circles — no other values */
+  /* Corner radii */
   --radius: 12px;
   --radius-sm: 8px;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: dark; /* browser UI (scrollbars, autofill, dialogs) renders dark */
+  /* Page side padding */
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+
+  font: 16px/1.55 var(--sans);
+  color-scheme: dark; /* Dark browser UI */
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+/* Larger text on big screens */
+@media (min-width: 1024px) and (min-height: 800px) {
+  :root {
+    font-size: 17px;
   }
 }
 
-/* Light theme via data-theme="light" on <html> (dark is default): Alabaster #E5E4E2 surfaces, Onyx #0A0A0A text, Blue Slate accent deepened slightly for contrast */
+/* Light theme colors */
 [data-theme='light'] {
   --text: #4f565c;
   --text-h: #0a0a0a;
+  --text-dim: #85847f;
   --bg: #e5e4e2;
   --bg-elevated: #f2f1ef;
   --border: #cfceca;
@@ -55,145 +56,44 @@
   --accent: #4e6272;
   --accent-bg: rgba(83, 104, 120, 0.1);
   --accent-border: rgba(83, 104, 120, 0.45);
-  --social-bg: rgba(207, 206, 202, 0.6);
   --shadow:
     rgba(10, 10, 10, 0.09) 0 10px 15px -3px, rgba(10, 10, 10, 0.05) 0 4px 6px -2px;
-  --glow: rgba(83, 104, 120, 0.1);
-  --grid-dot: rgba(10, 10, 10, 0.05);
-  --status: #16a34a;
   --success: #15803d;
   --error: #dc2626;
   color-scheme: light;
 }
 
+html,
 body {
+  height: 100%;
   margin: 0;
-  /* Faint dot grid — gives the flat background a sense of surface */
-  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-/* Hero glow: fixed so it stays put on scroll, z-index -1 keeps it behind content but above the dot grid */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 80% 55% at 50% -12%,
-    var(--glow),
-    transparent 65%
-  );
-}
-
-/* Film grain: faint SVG noise overlay that makes flat surfaces feel like a material */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  pointer-events: none;
-  opacity: 0.026;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Section eyebrow: small mono label above headings; text alignment inherits from each section */
-.section-eyebrow {
-  display: block;
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 0.6rem;
-}
-
-.section-eyebrow::before {
-  content: '// ';
-  opacity: 0.55;
-}
-
-/* Scroll reveal: elements start low + transparent; the App.jsx observer adds .is-visible as they enter view */
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  overflow: hidden; /* Disable page scrolling */
+  background: var(--bg);
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  height: 100svh;
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
+  margin: 0;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 118%;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 24px;
-  }
-}
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+a {
+  color: inherit;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
-
-html {
-  scroll-behavior: smooth;
-  /* keeps headings clear of the mobile top bar */
-  scroll-padding-top: 56px;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
 }

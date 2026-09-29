@@ -11,7 +11,7 @@ function todayKey() {
   }).format(new Date());
 }
 
-// Rate limiter for the visit beacon (frontend only fires once per browser session)
+// Rate limit for the visit beacon
 const visitLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 30,
@@ -19,7 +19,7 @@ const visitLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// POST /api/visit — fire-and-forget beacon from the frontend
+// POST /api/visit: count a visit
 router.post('/visit', visitLimiter, async (req, res) => {
   if (configured) {
     try {
@@ -34,7 +34,7 @@ router.post('/visit', visitLimiter, async (req, res) => {
   res.status(204).end();
 });
 
-// Rate limiter for the stats endpoint
+// Rate limit for the stats endpoint
 const statsLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 60,
@@ -42,7 +42,7 @@ const statsLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// GET /api/visits — public totals; daily breakdown requires "Authorization: Bearer <STATS_TOKEN>"
+// GET /api/visits: totals, plus daily counts with a stats token
 router.get('/visits', statsLimiter, async (req, res) => {
   if (!configured) {
     return res.status(503).json({ error: 'Visit tracking not configured' });
@@ -58,7 +58,7 @@ router.get('/visits', statsLimiter, async (req, res) => {
       ['HGETALL', 'visits:daily'],
     ]);
 
-    // HGETALL comes back flat: [field, value, field, value, ...]
+    // Convert the flat HGETALL reply into an object
     const flat = dailyRes.result || [];
     const daily = {};
     for (let i = 0; i < flat.length; i += 2) {

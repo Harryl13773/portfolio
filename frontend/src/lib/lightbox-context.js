@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-// One shared preview panel for the whole page — see components/LightboxProvider.jsx
+// Shared screenshot viewer context
 export const LightboxContext = createContext(null);
 
 export function useLightbox() {

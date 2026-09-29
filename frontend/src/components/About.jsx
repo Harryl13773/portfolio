@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './About.css'
 
-// the courses in groups
+// Coursework grouped by department
 const COURSE_GROUPS = [
   {
     dept: 'ECE',
@@ -34,140 +34,67 @@ const COURSE_GROUPS = [
   },
 ]
 
-// Shared renderer for both presentations (inline unfold on phones, side panel on desktop)
-function CourseGroups() {
-  return (
-    <div className="coursework-groups">
-      {COURSE_GROUPS.map((group) => (
-        <div key={group.dept} className="coursework-group">
-          <span className="coursework-dept">{group.dept}</span>
-          <ul className="coursework-list">
-            {group.courses.map((course) => (
-              <li key={course.code} className="coursework-item">
-                <span className="coursework-code">{group.dept} {course.code}</span>
-                <span className="coursework-name">{course.name}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  )
-}
+const SKILLS = [
+  { label: 'Languages', items: ['Python', 'JavaScript', 'C++', 'C', 'Java', 'SQL', 'MATLAB'] },
+  { label: 'Frameworks', items: ['React', 'Node.js', 'Express', 'FastAPI', 'NumPy', 'Pandas'] },
+  { label: 'Cloud & DevOps', items: ['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Linux'] },
+  { label: 'Databases', items: ['PostgreSQL', 'ChromaDB', 'Vector Databases'] },
+]
 
 function About() {
   const [showCourses, setShowCourses] = useState(false)
 
   return (
-    <section className={'about' + (showCourses ? ' about-split' : '')}>
-      <div className="about-main">
-
-      {/* Hero — status, name, and current role */}
-      <div className="about-hero">
-        <p className="about-status">
-          <span className="status-dot" aria-hidden="true" />
-          Welcome to my website! · Dayton, OH
+    <div className="split about">
+      <div className="about-intro">
+        <p className="about-bio">
+          Computer Engineering graduate from The Ohio State University building full-stack
+          web applications, embedded systems, and AI-powered backends.
         </p>
-        <h1 className="about-name">Harry Lian</h1>
-        <p className="about-role">Computer Engineer · Full-Stack Developer</p>
-      </div>
+        <p className="about-location">Based in Dayton, OH</p>
 
-      {/* Short bio */}
-      <p className="about-bio">
-        Computer Engineering graduate from The Ohio State University with hands-on experience
-        building full-stack web applications, embedded systems, and AI-powered backends.
-      </p>
-
-      {/* Education — school name toggles the coursework list */}
-      <div className="about-education">
-        <button
-          className="about-school"
-          onClick={() => setShowCourses((open) => !open)}
-          aria-expanded={showCourses}
-          aria-controls="coursework"
-        >
-          The Ohio State University
-          <svg
-            className={'school-chevron' + (showCourses ? ' school-chevron-open' : '')}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+        <div className="about-education">
+          <p className="about-school">The Ohio State University</p>
+          <p className="about-degree">B.S. Electrical &amp; Computer Engineering, May 2026</p>
+          <button
+            className="about-courses-toggle"
+            onClick={() => setShowCourses((open) => !open)}
+            aria-expanded={showCourses}
+            aria-controls="about-aside"
           >
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </button>
-        <p className="about-degree">B.S. Electrical & Computer Engineering · May 2026</p>
-
-        <div
-          id="coursework"
-          className={'coursework' + (showCourses ? ' coursework-open' : '')}
-        >
-          <div className="coursework-inner">
-            <span className="coursework-label">Relevant coursework</span>
-            <CourseGroups />
-          </div>
+            {showCourses ? 'Show skills' : 'Show coursework'}
+          </button>
         </div>
       </div>
 
-      {/* Skills grouped by category */}
-      <div className="about-skills">
+      {/* Skills and coursework toggle in place */}
+      <div id="about-aside" className="about-aside">
+        <dl className={'skills about-view' + (showCourses ? ' about-view-hidden' : '')} inert={showCourses}>
+          {SKILLS.map((group) => (
+            <div key={group.label} className="skill-row">
+              <dt className="about-heading">{group.label}</dt>
+              <dd>{group.items.join(', ')}</dd>
+            </div>
+          ))}
+        </dl>
 
-        <div className="skill-group">
-          <span className="skill-label">Languages</span>
-          <div className="skill-pills">
-            {['Python', 'JavaScript', 'C++', 'C', 'Java', 'SQL', 'MATLAB'].map((s) => (
-              <span key={s} className="skill-pill">{s}</span>
-            ))}
-          </div>
+        <div className={'coursework about-view' + (showCourses ? '' : ' about-view-hidden')} inert={!showCourses}>
+          {COURSE_GROUPS.map((group) => (
+            <div key={group.dept}>
+              <h3 className="about-heading">{group.dept} coursework</h3>
+              <ul className="coursework-list">
+                {group.courses.map((course) => (
+                  <li key={course.code}>
+                    <span className="coursework-code">{course.code}</span>
+                    <span>{course.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-
-        <div className="skill-group">
-          <span className="skill-label">Frameworks</span>
-          <div className="skill-pills">
-            {['React', 'Node.js', 'Express', 'FastAPI', 'NumPy', 'Pandas'].map((s) => (
-              <span key={s} className="skill-pill">{s}</span>
-            ))}
-          </div>
-        </div>
-
-        <div className="skill-group">
-          <span className="skill-label">Cloud & DevOps</span>
-          <div className="skill-pills">
-            {['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Linux'].map((s) => (
-              <span key={s} className="skill-pill">{s}</span>
-            ))}
-          </div>
-        </div>
-
-        <div className="skill-group">
-          <span className="skill-label">Databases</span>
-          <div className="skill-pills">
-            {['PostgreSQL', 'ChromaDB', 'Vector Databases'].map((s) => (
-              <span key={s} className="skill-pill">{s}</span>
-            ))}
-          </div>
-        </div>
-
       </div>
-
-      </div>
-
-      {/* Desktop side panel — same courses, shown >900px; phones use the inline unfold above */}
-      <aside
-        className="about-panel"
-        aria-label="Relevant coursework"
-        aria-hidden={!showCourses}
-      >
-        <div className="about-panel-inner">
-          <span className="coursework-label">Relevant coursework</span>
-          <CourseGroups />
-        </div>
-      </aside>
-    </section>
+    </div>
   )
 }
 

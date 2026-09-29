@@ -1,19 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Navbar.css';
 
-// my resume
+// Resume PDF
 import resumePdf from '../assets/resume.pdf';
-import { navigate } from '../lib/navigate';
-import { useLightbox } from '../lib/lightbox-context';
 
-const LINKS = [
-  { label: 'About', target: 'about' },
-  { label: 'Experience', target: 'experience' },
-  { label: 'Projects', target: 'projects' },
-  { label: 'Contact', target: 'contact' },
-];
-
-// Applies a theme to the DOM (html attribute + browser-chrome color); shared by the toggle and the system listener
+// Applies a theme to the page
 function applyThemeDom(next) {
   if (next === 'light') {
     document.documentElement.dataset.theme = 'light';
@@ -26,17 +17,15 @@ function applyThemeDom(next) {
   }
 }
 
-function Navbar({ page = 'home' }) {
-  const [activeSection, setActiveSection] = useState('about');
-  const { isLightboxOpen } = useLightbox();
-  const progressRef = useRef(null);
+// Top bar: name, theme toggle, and resume
+function Navbar() {
 
-  // State mirrors <html data-theme>, already set pre-paint by the index.html script
+  // Current theme, set before paint by index.html
   const [theme, setTheme] = useState(() =>
     document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
   );
 
-  // Manual toggle: applies and persists, overriding the machine preference from then on
+  // Toggle and save the theme
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
@@ -44,15 +33,15 @@ function Navbar({ page = 'home' }) {
     try {
       localStorage.setItem('theme', next);
     } catch {
-      // storage unavailable — theme still applies for this visit
+      // Storage unavailable: apply for this visit only
     }
   };
 
-  // Follows the machine live (e.g. OS auto day/night switch) as long as the user hasn't toggled manually
+  // Follow system theme changes unless the user chose one
   useEffect(() => {
     applyThemeDom(
       document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
-    ); // syncs the theme-color meta with the pre-paint pick
+    ); // Sync the theme-color meta
 
     const mq = window.matchMedia('(prefers-color-scheme: light)');
     const onChange = (e) => {
@@ -60,7 +49,7 @@ function Navbar({ page = 'home' }) {
       try {
         stored = localStorage.getItem('theme');
       } catch {
-        // storage unavailable — treat as no override
+        // Storage unavailable: no saved choice
       }
       if (stored) return;
       const next = e.matches ? 'light' : 'dark';
@@ -72,70 +61,9 @@ function Navbar({ page = 'home' }) {
     return () => mq.removeEventListener('change', onChange);
   }, []);
 
-  // Thin beam along the top edge tracking scroll progress
-  useEffect(() => {
-    const onScroll = () => {
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - doc.clientHeight;
-      const progress = max > 0 ? doc.scrollTop / max : 0;
-      if (progressRef.current) {
-        progressRef.current.style.transform = `scaleX(${progress})`;
-      }
-    };
-
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-
-  // Watch which section is currently on screen and highlight its tab
-  useEffect(() => {
-    if (page !== 'home') return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      // Fires when a section crosses the middle band of the viewport
-      { rootMargin: '-40% 0px -55% 0px' }
-    );
-
-    LINKS.forEach((link) => {
-      const el = document.getElementById(link.target);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [page]);
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
-    <>
-      <div className="scroll-progress" aria-hidden="true" ref={progressRef} />
-
-      <button
-        className="navbar-name"
-        onClick={() =>
-          page === 'home'
-            ? window.scrollTo({ top: 0, behavior: 'smooth' })
-            : navigate('/')
-        }
-      >
-        Harry L.
-      </button>
+    <header className="navbar">
+      <span className="navbar-name">Harry Lian</span>
 
       <div className="top-right">
         <button
@@ -146,7 +74,7 @@ function Navbar({ page = 'home' }) {
           }
         >
           {theme === 'dark' ? (
-            /* sun — shows what clicking switches to */
+            /* Sun icon */
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -159,7 +87,7 @@ function Navbar({ page = 'home' }) {
               <path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M18.7 5.3L17 7M7 17l-1.7 1.7" />
             </svg>
           ) : (
-            /* moon */
+            /* Moon icon */
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -183,32 +111,7 @@ function Navbar({ page = 'home' }) {
           <span className="resume-button-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
-
-      {page === 'home' && (
-        <nav className="side-nav" aria-label="Section navigation">
-          <ul className="side-nav-links">
-            {LINKS.map((link, i) => (
-              <li key={link.target}>
-                <button
-                  className={
-                    'side-nav-link' +
-                    (activeSection === link.target ? ' side-nav-link-active' : '')
-                  }
-                  onClick={() => scrollTo(link.target)}
-                  disabled={isLightboxOpen}
-                >
-                  <span className="side-nav-index" aria-hidden="true">
-                    0{i + 1}
-                  </span>
-                  <span className="side-nav-indicator" aria-hidden="true" />
-                  <span className="side-nav-label">{link.label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-    </>
+    </header>
   );
 }
 

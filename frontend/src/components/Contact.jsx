@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import './Contact.css';
 
-// "company" is the honeypot — hidden from humans, tempting to bots
+// Empty form state; "company" is the honeypot
 const INITIAL_FORM = { name: '', email: '', message: '', company: '' };
 
-// API base URL: localhost in dev, Render URL in production builds
+// API base URL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
+const EMAIL = 'lian.000155@gmail.com';
+const LINKEDIN = 'https://www.linkedin.com/in/harry-lian/';
+const GITHUB = 'https://github.com/Harryl13773';
+const INSTAGRAM = 'https://www.instagram.com/harry_l215/';
+const INSTAGRAM_HANDLE = INSTAGRAM.split('/').filter(Boolean).pop();
 
 function Contact() {
   const [form, setForm] = useState(INITIAL_FORM);
@@ -28,7 +34,7 @@ function Contact() {
         body: JSON.stringify(form),
       });
 
-      // The error response may not be JSON (e.g. an HTML page from the host)
+      // Error responses may not be JSON
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
@@ -44,15 +50,33 @@ function Contact() {
   };
 
   return (
-    <section id="contact" className="contact reveal">
-      <span className="section-eyebrow">Contact</span>
-      <h2 className="contact-heading">Get In Touch</h2>
-      <p className="contact-subtext">
-        Have questions or want to work together? Send a message.
-      </p>
+    <div className="split contact">
+      <div>
+        <p className="contact-intro">
+          Have a question or want to work together? Send a message, or reach me directly.
+        </p>
+        <dl className="contact-direct">
+          <div>
+            <dt>Email</dt>
+            <dd><a className="text-link" href={`mailto:${EMAIL}`}>{EMAIL}</a></dd>
+          </div>
+          <div>
+            <dt>LinkedIn</dt>
+            <dd><a className="text-link" href={LINKEDIN} target="_blank" rel="noopener noreferrer">harry-lian</a></dd>
+          </div>
+          <div>
+            <dt>GitHub</dt>
+            <dd><a className="text-link" href={GITHUB} target="_blank" rel="noopener noreferrer">Harryl13773</a></dd>
+          </div>
+          <div>
+            <dt>Instagram</dt>
+            <dd><a className="text-link" href={INSTAGRAM} target="_blank" rel="noopener noreferrer">{INSTAGRAM_HANDLE}</a></dd>
+          </div>
+        </dl>
+      </div>
 
       <form className="contact-form" onSubmit={handleSubmit}>
-        {/* Honeypot integration */}
+        {/* Honeypot field */}
         <label className="contact-honeypot" aria-hidden="true">
           Company
           <input
@@ -101,7 +125,7 @@ function Contact() {
             required
             minLength={10}
             maxLength={2000}
-            rows={6}
+            rows={4}
           />
         </label>
 
@@ -122,7 +146,7 @@ function Contact() {
           <p className="contact-status contact-status-error">{errorMsg}</p>
         )}
       </form>
-    </section>
+    </div>
   );
 }
 

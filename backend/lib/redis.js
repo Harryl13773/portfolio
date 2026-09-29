@@ -1,4 +1,4 @@
-// Shared Upstash Redis REST helper (used by visits + contact routes)
+// Shared Upstash Redis REST helper
 const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
@@ -17,7 +17,7 @@ async function redis(commands) {
   if (!res.ok) {
     throw new Error(`Upstash responded ${res.status}`);
   }
-  return res.json(); // -> [{ result: ... }, ...] in command order
+  return res.json(); // Results in command order
 }
 
 module.exports = { configured, redis };
