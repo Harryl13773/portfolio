@@ -14,13 +14,9 @@
   display: flex;
   gap: clamp(1.1rem, 3.6vw, 3.5rem);
   padding: clamp(1.25rem, 5vh, 3.5rem) 0 clamp(1rem, 3.5vh, 2.25rem);
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
   border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.tabs::-webkit-scrollbar {
-  display: none;
 }
 
 .tab {
