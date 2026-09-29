@@ -125,6 +125,7 @@
 @media (min-width: 1200px) {
   .split.about {
     grid-template-columns: minmax(0, 1fr) max-content;
+    gap: clamp(2rem, 3.5vw, 4rem);
   }
 }
 

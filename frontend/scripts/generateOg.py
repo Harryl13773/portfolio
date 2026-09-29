@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
 """
-Regenerates public/front.png 
-
-The purpose of this: reading index.css, so webfront is adjusted
+Regenerates public/front.png, the link preview image, using the colors in index.css
 """
 
 import glob
 import os
 import re
 import sys
+import tempfile
 
 from fontTools.ttLib import TTFont
 from PIL import Image, ImageDraw, ImageFont
 
-os.chdir(os.path.join(os.path.dirname(__file__), '..'))  # run from frontend/ regardless of cwd
+os.chdir(os.path.join(os.path.dirname(__file__), '..'))  # Run from frontend/ regardless of cwd
 
-# parse from index.css
+# Read the dark theme colors from index.css
 css = open('src/index.css').read()
 root = css.split(':root')[1].split('}')[0]
 
@@ -25,57 +24,43 @@ def var(name):
         sys.exit(f'could not find --{name} in index.css :root')
     return m.group(1)
 
-BG, HEADING, ACCENT, TEXT, BORDER = var('bg'), var('text-h'), var('accent'), var('text'), var('border')
+BG, HEADING, TEXT, DIM, BORDER = var('bg'), var('text-h'), var('text'), var('text-dim'), var('border')
 
-def rgb(hexstr):
-    return tuple(int(hexstr[i:i + 2], 16) for i in (1, 3, 5))
-
-def blend(a, b, t):  # a..b at t in [0,1] — used to derive the dot-grid tone
-    return tuple(round(x + (y - x) * t) for x, y in zip(rgb(a), rgb(b)))
-
-# fonts section
-def ttf(package_glob, out):
+# Convert the site's bundled fonts to TTF for Pillow
+def ttf(package_glob, name):
     matches = glob.glob(package_glob)
     if not matches:
-        sys.exit(f'font not found ({package_glob}) — run npm install first')
+        sys.exit(f'font not found ({package_glob}); run npm install first')
     f = TTFont(matches[0])
     f.flavor = None
+    out = os.path.join(tempfile.gettempdir(), name)
     f.save(out)
     return out
 
-heading_ttf = ttf('node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2', '/tmp/og-heading.ttf')
-mono_ttf = ttf('node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2', '/tmp/og-mono.ttf')
+heading_ttf = ttf('node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2', 'og-heading.ttf')
+body_ttf = ttf('node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2', 'og-body.ttf')
 
-# rendering
-W, H = 1200, 630
+# Layout mirrors the site: name, tagline, tab row, rule, footer
+W, H, M = 1200, 630, 88
 img = Image.new('RGB', (W, H), BG)
 d = ImageDraw.Draw(img)
 
-for x in range(0, W, 32):  # dot grid, echoing the site background
-    for y in range(0, H, 32):
-        d.ellipse([x, y, x + 2, y + 2], fill=blend(BG, BORDER, 0.8))
+name_f = ImageFont.truetype(heading_ttf, 128)
+tagline_f = ImageFont.truetype(body_ttf, 38)
+tab_f = ImageFont.truetype(heading_ttf, 46)
+url_f = ImageFont.truetype(body_ttf, 28)
 
-glow = Image.new('L', (W, H), 0)  # soft accent glow behind the name, echoing the hero
-gd = ImageDraw.Draw(glow)
-cx, cy, r = W // 2, 140, 620
-for i in range(r, 0, -4):
-    gd.ellipse([cx - i, cy - i // 2, cx + i, cy + i // 2], fill=int(26 * (1 - i / r)))
-img = Image.composite(Image.new('RGB', (W, H), ACCENT), img, glow)
-d = ImageDraw.Draw(img)
+d.text((M - 6, 70), 'Harry Lian', font=name_f, fill=HEADING)
+d.text((M, 236), 'Computer engineer and full-stack developer', font=tagline_f, fill=TEXT)
 
-name_f = ImageFont.truetype(heading_ttf, 118)
-role_f = ImageFont.truetype(mono_ttf, 30)
-url_f = ImageFont.truetype(mono_ttf, 26)
+# Tab row with About active, like the site's first screen
+x = M
+for i, label in enumerate(['About', 'Experience', 'Projects', 'Contact']):
+    d.text((x, 420), label, font=tab_f, fill=HEADING if i == 0 else DIM)
+    x += d.textlength(label, font=tab_f) + 52
 
-def centered(text, font, y, fill):
-    d.text(((W - d.textlength(text, font=font)) / 2, y), text, font=font, fill=fill)
-
-centered('Harry Lian', name_f, 200, HEADING)
-centered('COMPUTER ENGINEER · FULL-STACK DEVELOPER', role_f, 360, ACCENT)
-
-d.line([(80, 540), (W - 80, 540)], fill=rgb(BORDER), width=2)
-d.text((80, 562), 'harrylian.com', font=url_f, fill=TEXT)
-d.text((W - 80 - d.textlength('// portfolio', font=url_f), 562), '// portfolio', font=url_f, fill=ACCENT)
+d.line([(M, 500), (W - M, 500)], fill=BORDER, width=2)
+d.text((M, 534), 'harrylian.com', font=url_f, fill=TEXT)
 
 img.save('public/front.png', optimize=True)
-print(f'public/front.png regenerated from palette: bg {BG}, heading {HEADING}, accent {ACCENT}')
+print(f'public/front.png regenerated from palette: bg {BG}, heading {HEADING}, text {TEXT}')

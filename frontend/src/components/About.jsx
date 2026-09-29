@@ -55,7 +55,8 @@ function About() {
 
         <div className="about-education">
           <p className="about-school">The Ohio State University</p>
-          <p className="about-degree">B.S. Electrical &amp; Computer Engineering, May 2026</p>
+          <p className="about-degree">B.S. Electrical &amp; Computer Engineering</p>
+          <p className="about-degree">May 2026</p>
           <button
             className="about-courses-toggle"
             onClick={() => setShowCourses((open) => !open)}
