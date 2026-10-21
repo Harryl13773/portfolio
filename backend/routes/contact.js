@@ -124,6 +124,7 @@ router.post('/', contactLimiter, async (req, res) => {
       await redis([['RPUSH', 'contact:messages', JSON.stringify(newMessage)]]);
     } else {
       let messages = [];
+      fs.mkdirSync(path.dirname(MESSAGES_FILE), { recursive: true });
       if (fs.existsSync(MESSAGES_FILE)) {
         messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf-8'));
       }

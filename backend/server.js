@@ -4,7 +4,6 @@ require('dotenv').config();
 // Import packages
 const express = require('express');
 const cors = require('cors');
-const projectRoutes = require('./routes/projects');
 const contactRoutes = require('./routes/contact');
 const visitsRoutes = require('./routes/visits');
 
@@ -33,7 +32,6 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api', visitsRoutes);           // POST /api/visit, GET /api/visits
-app.use('/api/projects', projectRoutes); // GET /api/projects
 app.use('/api/contact', contactRoutes);  // POST /api/contact
 
 // Port from .env, default 3001

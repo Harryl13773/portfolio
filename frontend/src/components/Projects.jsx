@@ -1,53 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLightbox } from '../lib/lightbox-context';
-import { loadProjects } from '../lib/projects';
+import projects from '../data/projects.json';
 import './Projects.css';
 
 const MAX_THUMBS = 4;
 
 function Projects() {
-  const [projects, setProjects] = useState(null);
-  const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const { openLightbox } = useLightbox();
-
-  useEffect(() => {
-    let cancelled = false;
-    loadProjects()
-      .then((data) => {
-        if (!cancelled) setProjects(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (error) return <p className="projects-message">{error}</p>;
-
-  // Loading skeleton
-  if (!projects) {
-    return (
-      <div className="split" aria-busy="true" aria-label="Loading projects">
-        <div className="picker" aria-hidden="true">
-          {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="picker-item skeleton-row">
-              <div className="skeleton-line skeleton-title" />
-              <div className="skeleton-line skeleton-short" />
-            </div>
-          ))}
-        </div>
-        <div aria-hidden="true">
-          <div className="skeleton-line skeleton-heading" />
-          <div className="skeleton-line" />
-          <div className="skeleton-line" />
-          <div className="skeleton-line skeleton-short" />
-        </div>
-      </div>
-    );
-  }
 
   const project = projects.find((p) => p.id === selectedId) || projects[0];
   if (!project) return <p className="projects-message">No projects yet.</p>;

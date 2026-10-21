@@ -6,7 +6,6 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { useLightbox } from './lib/lightbox-context';
-import { loadProjects } from './lib/projects';
 import './App.css';
 
 // API base URL
@@ -116,12 +115,7 @@ function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [active, select, isLightboxOpen]);
 
-  // Prefetch projects to hide the API cold start
-  useEffect(() => {
-    loadProjects().catch(() => {});
-  }, []);
-
-  // Count one visit per browser session
+  // Count one visit per browser session (also wakes the API before a contact submit)
   useEffect(() => {
     if (!import.meta.env.PROD) return;
     if (sessionStorage.getItem('visit-counted')) return;
